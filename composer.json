@@ -1,0 +1,26 @@
+{
+  "name": "runn/http",
+  "description": "Runn Me! HTTP Library",
+  "keywords": ["runn", "runn.me", "framework", "HTTP", "URL", "URI"],
+  "type": "library",
+  "license": "LGPL-3.0-or-later",
+  "authors": [
+    {
+      "name": "Albert Stepantsev"
+    }
+  ],
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "require": {
+    "php": ">=7.0",
+    "psr/http-message": "*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "5.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Runn\\": "src/"
+    }
+  }
+}
