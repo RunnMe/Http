@@ -129,4 +129,22 @@ class UriTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('/foo/bar', $uri->getPath());
     }
 
+    public function testQuery()
+    {
+        $uri = new Uri('//test.com/foo/bar');
+        $this->assertSame('', $uri->getQuery() );
+
+        $uri = new Uri('//test.com/?');
+        $this->assertSame('', $uri->getQuery() );
+
+        $uri = new Uri('//test.com/?foo=bar');
+        $this->assertSame('foo=bar', $uri->getQuery() );
+
+        $uri = new Uri('//test.com/?foo=bar&baz=bla');
+        $this->assertSame('foo=bar&baz=bla', $uri->getQuery() );
+
+        $uri = new Uri('//test.com/?something#else');
+        $this->assertSame('something', $uri->getQuery() );
+    }
+
 }

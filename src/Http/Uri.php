@@ -17,6 +17,7 @@ class Uri implements UriInterface
     protected $host;
     protected $port;
     protected $path;
+    protected $query;
 
     /**
      * URI constructor.
@@ -35,6 +36,7 @@ class Uri implements UriInterface
         $this->host = strtolower($parts['host'] ?? '');
         $this->port = $parts['port'] ?? null;
         $this->path = $parts['path'] ?? '';
+        $this->query = $parts['query'] ?? '';
     }
 
     /**
@@ -136,28 +138,13 @@ class Uri implements UriInterface
     }
 
     /**
-     * Retrieve the query string of the URI.
-     *
-     * If no query string is present, this method MUST return an empty string.
-     *
-     * The leading "?" character is not part of the query and MUST NOT be
-     * added.
-     *
-     * The value returned MUST be percent-encoded, but MUST NOT double-encode
-     * any characters. To determine what characters to encode, please refer to
-     * RFC 3986, Sections 2 and 3.4.
-     *
-     * As an example, if a value in a key/value pair of the query string should
-     * include an ampersand ("&") not intended as a delimiter between values,
-     * that value MUST be passed in encoded form (e.g., "%26") to the instance.
-     *
      * @see https://tools.ietf.org/html/rfc3986#section-2
      * @see https://tools.ietf.org/html/rfc3986#section-3.4
      * @return string The URI query string.
      */
-    public function getQuery()
+    public function getQuery(): string
     {
-        // TODO: Implement getQuery() method.
+        return $this->query;
     }
 
     /**
