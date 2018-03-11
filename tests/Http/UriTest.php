@@ -22,4 +22,28 @@ class UriTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('ftp', $uri->getProtocol());
     }
 
+    public function testUserName()
+    {
+        $uri = new Uri('test.local');
+        $this->assertSame('', $uri->getUserName());
+
+        $uri = new Uri('http://foo@test.local');
+        $this->assertSame('foo', $uri->getUserName());
+
+        $uri = new Uri('http://foo:bar@test.local');
+        $this->assertSame('foo', $uri->getUserName());
+    }
+
+    public function testPassword()
+    {
+        $uri = new Uri('test.local');
+        $this->assertSame('', $uri->getPassword());
+
+        $uri = new Uri('http://foo@test.local');
+        $this->assertSame('', $uri->getPassword());
+
+        $uri = new Uri('http://foo:bar@test.local');
+        $this->assertSame('bar', $uri->getPassword());
+    }
+
 }

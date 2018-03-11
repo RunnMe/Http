@@ -6,11 +6,15 @@ class Uri implements UriInterface
 {
 
     protected $scheme;
+    protected $username;
+    protected $password;
 
     public function __construct(string $uri)
     {
         $parts = parse_url($uri);
         $this->scheme = strtolower($parts['scheme'] ?? '');
+        $this->username = strtolower($parts['user'] ?? '');
+        $this->password = strtolower($parts['pass'] ?? '');
     }
 
     /**
@@ -29,6 +33,24 @@ class Uri implements UriInterface
     public function getProtocol(): string
     {
         return $this->getScheme();
+    }
+
+    /**
+     * User name or empty string
+     * @return string
+     */
+    public function getUserName(): string
+    {
+        return $this->username;
+    }
+
+    /**
+     * Password or empty string
+     * @return string
+     */
+    public function getPassword(): string
+    {
+        return $this->password;
     }
 
     /**
@@ -243,22 +265,6 @@ class Uri implements UriInterface
     }
 
     /**
-     * @return string
-     */
-    public function getUserName(): string
-    {
-        // TODO: Implement getUserName() method.
-    }
-
-    /**
-     * @return string
-     */
-    public function getPassword(): string
-    {
-        // TODO: Implement getPassword() method.
-    }
-
-    /**
      * @7.1
      * @return iterable
      */
@@ -371,7 +377,7 @@ class Uri implements UriInterface
      *
      * @return string The URI user information, in "username[:password]" format.
      */
-    public function getUserInfo()
+    public function getUserInfo(): string
     {
         // TODO: Implement getUserInfo() method.
     }
