@@ -64,6 +64,37 @@ interface UriInterface extends \Psr\Http\Message\UriInterface
     public function getUserInfo(): string;
 
     /**
+     * Retrieve the host component of the URI.
+     *
+     * If no host is present, this method MUST return an empty string.
+     *
+     * The value returned MUST be normalized to lowercase, per RFC 3986
+     * Section 3.2.2.
+     *
+     * @see http://tools.ietf.org/html/rfc3986#section-3.2.2
+     * @return string The URI host.
+     */
+    public function getHost(): string;
+
+    /**
+     * Retrieve the port component of the URI.
+     *
+     * If a port is present, and it is non-standard for the current scheme,
+     * this method MUST return it as an integer. If the port is the standard port
+     * used with the current scheme, this method SHOULD return null.
+     *
+     * If no port is present, and no scheme is present, this method MUST return
+     * a null value.
+     *
+     * If no port is present, but a scheme is present, this method MAY return
+     * the standard port for that scheme, but SHOULD return null.
+     *
+     * @return null|int The URI port.
+     * @7.1
+     */
+    public function getPort()/*: ?int*/;
+
+    /**
      * @7.1
      * @return iterable
      */

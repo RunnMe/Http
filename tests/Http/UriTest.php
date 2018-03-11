@@ -35,7 +35,7 @@ class UriTest extends \PHPUnit_Framework_TestCase
         $uri = new Uri('http://foo@test.local');
         $this->assertSame('foo', $uri->getUserName());
 
-        $uri = new Uri('http://foo:bar@test.local');
+        $uri = new Uri('http://foo:bAr123@test.local');
         $this->assertSame('foo', $uri->getUserName());
     }
 
@@ -47,8 +47,8 @@ class UriTest extends \PHPUnit_Framework_TestCase
         $uri = new Uri('http://foo@test.local');
         $this->assertSame('', $uri->getPassword());
 
-        $uri = new Uri('http://foo:bar@test.local');
-        $this->assertSame('bar', $uri->getPassword());
+        $uri = new Uri('http://foo:bAr123@test.local');
+        $this->assertSame('bAr123', $uri->getPassword());
     }
 
     public function testUserInfo()
@@ -59,8 +59,20 @@ class UriTest extends \PHPUnit_Framework_TestCase
         $uri = new Uri('http://foo@test.local');
         $this->assertSame('foo', $uri->getUserInfo());
 
-        $uri = new Uri('http://foo:bar@test.local');
-        $this->assertSame('foo:bar', $uri->getUserInfo());
+        $uri = new Uri('http://foo:bAr123@test.local');
+        $this->assertSame('foo:bAr123', $uri->getUserInfo());
+    }
+
+    public function testHost()
+    {
+        $uri = new Uri('/foo/bar');
+        $this->assertSame('', $uri->getHost());
+
+        $uri = new Uri('http://localhost');
+        $this->assertSame('localhost', $uri->getHost());
+
+        $uri = new Uri('http://tEsT.cOm/foo/bar');
+        $this->assertSame('test.com', $uri->getHost());
     }
 
 }
