@@ -210,7 +210,9 @@ class Uri implements UriInterface
      */
     public function withPassword(string $password = null)
     {
-        // TODO: Implement withPassword() method.
+        $clone = clone $this;
+        $clone->password = empty($password) ? '' : (string)$password;
+        return $clone;
     }
 
     /**
@@ -218,7 +220,7 @@ class Uri implements UriInterface
      */
     public function withoutPassword()
     {
-        // TODO: Implement withoutPassword() method.
+        return $this->withPassword();
     }
 
     /**

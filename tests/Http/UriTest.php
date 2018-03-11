@@ -133,19 +133,19 @@ class UriTest extends \PHPUnit_Framework_TestCase
     public function testQuery()
     {
         $uri = new Uri('//test.com/foo/bar');
-        $this->assertSame('', $uri->getQuery() );
+        $this->assertSame('', $uri->getQuery());
 
         $uri = new Uri('//test.com/?');
-        $this->assertSame('', $uri->getQuery() );
+        $this->assertSame('', $uri->getQuery());
 
         $uri = new Uri('//test.com/?foo=bar');
-        $this->assertSame('foo=bar', $uri->getQuery() );
+        $this->assertSame('foo=bar', $uri->getQuery());
 
         $uri = new Uri('//test.com/?foo=bar&baz=bla');
-        $this->assertSame('foo=bar&baz=bla', $uri->getQuery() );
+        $this->assertSame('foo=bar&baz=bla', $uri->getQuery());
 
         $uri = new Uri('//test.com/?something#else');
-        $this->assertSame('something', $uri->getQuery() );
+        $this->assertSame('something', $uri->getQuery());
     }
 
     public function testQueryParams()
@@ -169,13 +169,13 @@ class UriTest extends \PHPUnit_Framework_TestCase
     public function testFragment()
     {
         $uri = new Uri('//test.com/foo/bar');
-        $this->assertSame('', $uri->getFragment() );
+        $this->assertSame('', $uri->getFragment());
 
         $uri = new Uri('//test.com/#');
-        $this->assertSame('', $uri->getFragment() );
+        $this->assertSame('', $uri->getFragment());
 
         $uri = new Uri('//test.com/?something#else');
-        $this->assertSame('else', $uri->getFragment() );
+        $this->assertSame('else', $uri->getFragment());
     }
 
     public function testWithScheme()
@@ -226,7 +226,7 @@ class UriTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('', $modified->getScheme());
     }
 
-    public function testWithuserName()
+    public function testWithUserName()
     {
         $uri = new Uri('http://test.com/');
         $this->assertSame('', $uri->getUserName());
@@ -236,6 +236,37 @@ class UriTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(Uri::class, $modified);
         $this->assertNotSame($modified, $uri);
         $this->assertSame('foo', $modified->getUserName());
+        $this->assertSame('foo', $modified->getUserInfo());
+    }
+
+    public function testWithAndWithoutPassword()
+    {
+        $uri = new Uri('http://foo:BaR123@test.com/');
+        $this->assertSame('BaR123', $uri->getPassword());
+        $this->assertSame('foo:BaR123', $uri->getUserInfo());
+
+        $modified = $uri->withPassword('123bAr');
+        $this->assertInstanceOf(Uri::class, $modified);
+        $this->assertNotSame($modified, $uri);
+        $this->assertSame('123bAr', $modified->getPassword());
+        $this->assertSame('foo:123bAr', $modified->getUserInfo());
+
+        $modified = $uri->withPassword('');
+        $this->assertInstanceOf(Uri::class, $modified);
+        $this->assertNotSame($modified, $uri);
+        $this->assertSame('', $modified->getPassword());
+        $this->assertSame('foo', $modified->getUserInfo());
+
+        $modified = $uri->withPassword();
+        $this->assertInstanceOf(Uri::class, $modified);
+        $this->assertNotSame($modified, $uri);
+        $this->assertSame('', $modified->getPassword());
+        $this->assertSame('foo', $modified->getUserInfo());
+
+        $modified = $uri->withoutPassword();
+        $this->assertInstanceOf(Uri::class, $modified);
+        $this->assertNotSame($modified, $uri);
+        $this->assertSame('', $modified->getPassword());
         $this->assertSame('foo', $modified->getUserInfo());
     }
 
