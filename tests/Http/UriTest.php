@@ -2,6 +2,7 @@
 
 namespace Runn\tests\Http\Uri;
 
+use Runn\Core\Std;
 use Runn\Http\Uri;
 
 class UriTest extends \PHPUnit_Framework_TestCase
@@ -145,6 +146,24 @@ class UriTest extends \PHPUnit_Framework_TestCase
 
         $uri = new Uri('//test.com/?something#else');
         $this->assertSame('something', $uri->getQuery() );
+    }
+
+    public function testQueryParams()
+    {
+        $uri = new Uri('//test.com/foo/bar');
+        $this->assertEquals(new Std, $uri->getQueryParams());
+
+        $uri = new Uri('//test.com/?');
+        $this->assertEquals(new Std, $uri->getQueryParams());
+
+        $uri = new Uri('//test.com/?foo=bar');
+        $this->assertEquals(new Std(['foo' => 'bar']), $uri->getQueryParams());
+
+        $uri = new Uri('//test.com/?foo=bar&baz=bla');
+        $this->assertEquals(new Std(['foo' => 'bar', 'baz' => 'bla']), $uri->getQueryParams());
+
+        $uri = new Uri('//test.com/?something#else');
+        $this->assertEquals(new Std(['something' => '']), $uri->getQueryParams());
     }
 
 }

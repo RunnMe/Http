@@ -2,6 +2,7 @@
 
 namespace Runn\Http;
 
+use Runn\Core\Std;
 use Runn\Http\Exceptions\InvalidUrl;
 
 /**
@@ -148,6 +149,16 @@ class Uri implements UriInterface
     }
 
     /**
+     * @7.1
+     * @return Std
+     */
+    public function getQueryParams()/*: iterable*/
+    {
+        parse_str($this->getQuery(), $res);
+        return new Std($res);
+    }
+
+    /**
      * Return an instance with the specified scheme.
      *
      * This method MUST retain the state of the current instance, and return
@@ -262,15 +273,6 @@ class Uri implements UriInterface
     public function withFragment($fragment)
     {
         // TODO: Implement withFragment() method.
-    }
-
-    /**
-     * @7.1
-     * @return iterable
-     */
-    public function getQueryParams()/*: iterable*/
-    {
-        // TODO: Implement getQueryParams() method.
     }
 
     /**
