@@ -75,4 +75,19 @@ class UriTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('test.com', $uri->getHost());
     }
 
+    public function testPort()
+    {
+        $uri = new Uri('/foo/bar');
+        $this->assertNull($uri->getPort());
+
+        $uri = new Uri('http://test.com/foo/bar');
+        $this->assertNull($uri->getPort());
+
+        $uri = new Uri('http://test.com:80/foo/bar');
+        $this->assertNull($uri->getPort());
+
+        $uri = new Uri('http://test.com:81/foo/bar');
+        $this->assertSame(81, $uri->getPort());
+    }
+
 }

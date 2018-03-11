@@ -12,6 +12,16 @@ namespace Runn\Http;
 interface UriInterface extends \Psr\Http\Message\UriInterface
 {
 
+    public const PORTS = [
+        'ftp' => 21,
+        'ssh' => 22,
+        'http' => 80,
+        'nntp' => 119,
+        'irc' => 194,
+        'ldap' => 389,
+        'https' => 443,
+    ];
+
     /**
      * Retrieve the scheme component of the URI.
      *

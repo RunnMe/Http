@@ -15,6 +15,7 @@ class Uri implements UriInterface
     protected $username;
     protected $password;
     protected $host;
+    protected $port;
 
     /**
      * URI constructor.
@@ -31,6 +32,7 @@ class Uri implements UriInterface
         $this->username = $parts['user'] ?? '';
         $this->password = $parts['pass'] ?? '';
         $this->host = strtolower($parts['host'] ?? '');
+        $this->port = $parts['port'] ?? null;
     }
 
     /**
@@ -98,7 +100,10 @@ class Uri implements UriInterface
      */
     public function getPort()/*: ?int*/
     {
-        // TODO: Implement getPort() method.
+        if (isset(static::PORTS[$this->getScheme()]) && $this->port === static::PORTS[$this->getScheme()]) {
+            return null;
+        }
+        return $this->port;
     }
 
     /**
