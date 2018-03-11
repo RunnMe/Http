@@ -270,4 +270,44 @@ class UriTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('foo', $modified->getUserInfo());
     }
 
+    public function testWithUserInfo()
+    {
+        $uri = new Uri('http://test.com/');
+        $this->assertSame('', $uri->getUserInfo());
+
+        $modified = $uri->withUserInfo('foo');
+        $this->assertInstanceOf(Uri::class, $modified);
+        $this->assertNotSame($modified, $uri);
+        $this->assertSame('foo', $modified->getUserInfo());
+        $this->assertSame('foo', $modified->getUserName());
+        $this->assertSame('', $modified->getPassword());
+
+        $modified = $uri->withUserInfo('foo', 'bAr123');
+        $this->assertInstanceOf(Uri::class, $modified);
+        $this->assertNotSame($modified, $uri);
+        $this->assertSame('foo:bAr123', $modified->getUserInfo());
+        $this->assertSame('foo', $modified->getUserName());
+        $this->assertSame('bAr123', $modified->getPassword());
+    }
+
+    public function testWithoutUserInfo()
+    {
+        $uri = new Uri('http://foo:bar@test.com/');
+        $this->assertSame('foo:bar', $uri->getUserInfo());
+
+        $modified = $uri->withUserInfo('');
+        $this->assertInstanceOf(Uri::class, $modified);
+        $this->assertNotSame($modified, $uri);
+        $this->assertSame('', $modified->getUserInfo());
+        $this->assertSame('', $modified->getUserName());
+        $this->assertSame('', $modified->getPassword());
+
+        $modified = $uri->withoutUserInfo();
+        $this->assertInstanceOf(Uri::class, $modified);
+        $this->assertNotSame($modified, $uri);
+        $this->assertSame('', $modified->getUserInfo());
+        $this->assertSame('', $modified->getUserName());
+        $this->assertSame('', $modified->getPassword());
+    }
+
 }
