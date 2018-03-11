@@ -7,6 +7,11 @@ use Runn\Http\Uri;
 class UriTest extends \PHPUnit_Framework_TestCase
 {
 
+    public function testMalformed()
+    {
+        // @todo malformed URL
+    }
+
     public function testScheme()
     {
         $uri = new Uri('test.local');
