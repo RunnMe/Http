@@ -224,11 +224,6 @@ interface UriInterface extends \Psr\Http\Message\UriInterface
     public function withProtocol(string $protocol = null);
 
     /**
-     * @return static
-     */
-    public function withoutUserInfo();
-
-    /**
      * @param string$userName
      * @return static
      */
@@ -238,12 +233,17 @@ interface UriInterface extends \Psr\Http\Message\UriInterface
      * @param string $password
      * @return static
      */
-    public function withPassword(string $password);
+    public function withPassword(string $password = null);
 
     /**
      * @return static
      */
     public function withoutPassword();
+
+    /**
+     * @return static
+     */
+    public function withoutUserInfo();
 
     /**
      * @param string $name

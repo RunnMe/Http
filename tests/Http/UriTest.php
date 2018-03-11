@@ -226,4 +226,17 @@ class UriTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('', $modified->getScheme());
     }
 
+    public function testWithuserName()
+    {
+        $uri = new Uri('http://test.com/');
+        $this->assertSame('', $uri->getUserName());
+        $this->assertSame('', $uri->getUserInfo());
+
+        $modified = $uri->withUserName('foo');
+        $this->assertInstanceOf(Uri::class, $modified);
+        $this->assertNotSame($modified, $uri);
+        $this->assertSame('foo', $modified->getUserName());
+        $this->assertSame('foo', $modified->getUserInfo());
+    }
+
 }

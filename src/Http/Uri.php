@@ -194,6 +194,34 @@ class Uri implements UriInterface
     }
 
     /**
+     * @param string $userName
+     * @return static
+     */
+    public function withUserName(string $userName)
+    {
+        $clone = clone $this;
+        $clone->username = (string)$userName;
+        return $clone;
+    }
+
+    /**
+     * @param string $password
+     * @return static
+     */
+    public function withPassword(string $password = null)
+    {
+        // TODO: Implement withPassword() method.
+    }
+
+    /**
+     * @return static
+     */
+    public function withoutPassword()
+    {
+        // TODO: Implement withoutPassword() method.
+    }
+
+    /**
      * Return an instance with the specified user information.
      *
      * This method MUST retain the state of the current instance, and return
@@ -291,15 +319,6 @@ class Uri implements UriInterface
     }
 
     /**
-     * @param string $password
-     * @return static
-     */
-    public function withPassword(string $password)
-    {
-        // TODO: Implement withPassword() method.
-    }
-
-    /**
      * Return an instance with the specified path.
      *
      * This method MUST retain the state of the current instance, and return
@@ -332,23 +351,6 @@ class Uri implements UriInterface
     public function withoutUserInfo()
     {
         // TODO: Implement withoutUserInfo() method.
-    }
-
-    /**
-     * @param string $userName
-     * @return static
-     */
-    public function withUserName(string $userName)
-    {
-        // TODO: Implement withUserName() method.
-    }
-
-    /**
-     * @return static
-     */
-    public function withoutPassword()
-    {
-        // TODO: Implement withoutPassword() method.
     }
 
     /**
