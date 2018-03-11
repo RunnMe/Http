@@ -13,7 +13,23 @@ interface UriInterface extends \Psr\Http\Message\UriInterface
 {
 
     /**
-     * Alias for getScheme()
+     * Retrieve the scheme component of the URI.
+     *
+     * If no scheme is present, this method MUST return an empty string.
+     *
+     * The value returned MUST be normalized to lowercase, per RFC 3986
+     * Section 3.1.
+     *
+     * The trailing ":" character is not part of the scheme and MUST NOT be
+     * added.
+     *
+     * @see https://tools.ietf.org/html/rfc3986#section-3.1
+     * @return string The URI scheme.
+     */
+    public function getScheme(): string;
+
+    /**
+     * Alias for $this->getScheme()
      * @return string
      */
     public function getProtocol(): string;
