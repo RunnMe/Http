@@ -187,15 +187,42 @@ class UriTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(Uri::class, $modified);
         $this->assertNotSame($modified, $uri);
         $this->assertSame('https', $modified->getScheme());
+        $this->assertSame('https', $modified->getProtocol());
 
         $modified = $uri->withScheme('FTP');
         $this->assertInstanceOf(Uri::class, $modified);
         $this->assertNotSame($modified, $uri);
         $this->assertSame('ftp', $modified->getScheme());
+        $this->assertSame('ftp', $modified->getProtocol());
 
         $modified = $uri->withScheme();
         $this->assertInstanceOf(Uri::class, $modified);
         $this->assertNotSame($modified, $uri);
+        $this->assertSame('', $modified->getScheme());
+        $this->assertSame('', $modified->getProtocol());
+    }
+
+    public function testWithProtocol()
+    {
+        $uri = new Uri('http://test.com/');
+        $this->assertSame('http', $uri->getScheme());
+
+        $modified = $uri->withProtocol('https');
+        $this->assertInstanceOf(Uri::class, $modified);
+        $this->assertNotSame($modified, $uri);
+        $this->assertSame('https', $modified->getProtocol());
+        $this->assertSame('https', $modified->getScheme());
+
+        $modified = $uri->withProtocol('FTP');
+        $this->assertInstanceOf(Uri::class, $modified);
+        $this->assertNotSame($modified, $uri);
+        $this->assertSame('ftp', $modified->getProtocol());
+        $this->assertSame('ftp', $modified->getScheme());
+
+        $modified = $uri->withProtocol();
+        $this->assertInstanceOf(Uri::class, $modified);
+        $this->assertNotSame($modified, $uri);
+        $this->assertSame('', $modified->getProtocol());
         $this->assertSame('', $modified->getScheme());
     }
 
