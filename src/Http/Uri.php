@@ -110,9 +110,17 @@ class Uri implements UriInterface
      * @see https://tools.ietf.org/html/rfc3986#section-3.2
      * @return string The URI authority, in "[user-info@]host[:port]" format.
      */
-    public function getAuthority()
+    public function getAuthority(): string
     {
-        // TODO: Implement getAuthority() method.
+        $ret = '';
+        if (!empty($this->getUserInfo())) {
+            $ret .= $this->getUserInfo() . '@';
+        }
+        $ret .= $this->getHost();
+        if (!empty($this->getPort())) {
+            $ret .= ':' . $this->getPort();
+        }
+        return $ret;
     }
 
     /**

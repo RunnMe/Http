@@ -90,4 +90,23 @@ class UriTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(81, $uri->getPort());
     }
 
+    public function testAuthority()
+    {
+        $uri = new Uri('/foo/bar');
+        $this->assertSame('', $uri->getAuthority());
+
+        $uri = new Uri('http://user@localhost');
+        $this->assertSame('user@localhost', $uri->getAuthority());
+
+        $uri = new Uri('http://user:pAsSwD@localhost');
+        $this->assertSame('user:pAsSwD@localhost', $uri->getAuthority());
+
+        $uri = new Uri('http://user:pAsSwD@localhost:81');
+        $this->assertSame('user:pAsSwD@localhost:81', $uri->getAuthority());
+
+        $uri = new Uri('http://localhost:80');
+        $this->assertSame('localhost', $uri->getAuthority());
+
+    }
+
 }
