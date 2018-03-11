@@ -12,7 +12,8 @@ namespace Runn\Http;
 interface UriInterface extends \Psr\Http\Message\UriInterface
 {
 
-    public const PORTS = [
+    // @7.1
+    /*public */const PORTS = [
         'ftp' => 21,
         'ssh' => 22,
         'http' => 80,
