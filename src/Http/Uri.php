@@ -19,6 +19,7 @@ class Uri implements UriInterface
     protected $port;
     protected $path;
     protected $query;
+    protected $fragment;
 
     /**
      * URI constructor.
@@ -38,6 +39,7 @@ class Uri implements UriInterface
         $this->port = $parts['port'] ?? null;
         $this->path = $parts['path'] ?? '';
         $this->query = $parts['query'] ?? '';
+        $this->fragment = $parts['fragment'] ?? '';
     }
 
     /**
@@ -156,6 +158,16 @@ class Uri implements UriInterface
     {
         parse_str($this->getQuery(), $res);
         return new Std($res);
+    }
+
+    /**
+     * @see https://tools.ietf.org/html/rfc3986#section-2
+     * @see https://tools.ietf.org/html/rfc3986#section-3.5
+     * @return string The URI fragment.
+     */
+    public function getFragment(): string
+    {
+        return $this->fragment;
     }
 
     /**
@@ -362,27 +374,6 @@ class Uri implements UriInterface
     public function withoutQueryParam(string $name)
     {
         // TODO: Implement withoutQueryParam() method.
-    }
-
-    /**
-     * Retrieve the fragment component of the URI.
-     *
-     * If no fragment is present, this method MUST return an empty string.
-     *
-     * The leading "#" character is not part of the fragment and MUST NOT be
-     * added.
-     *
-     * The value returned MUST be percent-encoded, but MUST NOT double-encode
-     * any characters. To determine what characters to encode, please refer to
-     * RFC 3986, Sections 2 and 3.5.
-     *
-     * @see https://tools.ietf.org/html/rfc3986#section-2
-     * @see https://tools.ietf.org/html/rfc3986#section-3.5
-     * @return string The URI fragment.
-     */
-    public function getFragment()
-    {
-        // TODO: Implement getFragment() method.
     }
 
     /**

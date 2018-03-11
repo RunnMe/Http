@@ -166,4 +166,16 @@ class UriTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(new Std(['something' => '']), $uri->getQueryParams());
     }
 
+    public function testFragment()
+    {
+        $uri = new Uri('//test.com/foo/bar');
+        $this->assertSame('', $uri->getFragment() );
+
+        $uri = new Uri('//test.com/#');
+        $this->assertSame('', $uri->getFragment() );
+
+        $uri = new Uri('//test.com/?something#else');
+        $this->assertSame('else', $uri->getFragment() );
+    }
+
 }
