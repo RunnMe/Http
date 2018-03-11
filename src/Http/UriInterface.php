@@ -199,10 +199,29 @@ interface UriInterface extends \Psr\Http\Message\UriInterface
     public function getFragment(): string;
 
     /**
+     * Return an instance with the specified scheme.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified scheme.
+     *
+     * Implementations MUST support the schemes "http" and "https" case
+     * insensitively, and MAY accommodate other schemes if required.
+     *
+     * An empty scheme is equivalent to removing the scheme.
+     *
+     * @param string $scheme The scheme to use with the new instance.
+     * @return static A new instance with the specified scheme.
+     * @throws \InvalidArgumentException for invalid or unsupported schemes.
+     */
+    public function withScheme($scheme = null);
+
+    /**
+     * Alias for $this->withScheme()
+     *
      * @param $protocol
      * @return static
      */
-    public function withProtocol(string $protocol);
+    public function withProtocol(string $protocol = null);
 
     /**
      * @return static

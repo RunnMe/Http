@@ -178,4 +178,25 @@ class UriTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('else', $uri->getFragment() );
     }
 
+    public function testWithScheme()
+    {
+        $uri = new Uri('http://test.com/');
+        $this->assertSame('http', $uri->getScheme());
+
+        $modified = $uri->withScheme('https');
+        $this->assertInstanceOf(Uri::class, $modified);
+        $this->assertNotSame($modified, $uri);
+        $this->assertSame('https', $modified->getScheme());
+
+        $modified = $uri->withScheme('FTP');
+        $this->assertInstanceOf(Uri::class, $modified);
+        $this->assertNotSame($modified, $uri);
+        $this->assertSame('ftp', $modified->getScheme());
+
+        $modified = $uri->withScheme();
+        $this->assertInstanceOf(Uri::class, $modified);
+        $this->assertNotSame($modified, $uri);
+        $this->assertSame('', $modified->getScheme());
+    }
+
 }
