@@ -40,19 +40,25 @@ interface UriInterface extends \Psr\Http\Message\UriInterface
     public function getScheme(): string;
 
     /**
-     * Alias for $this->getScheme()
+     * Alias for $this->getScheme() :
+     * Retrieve the scheme component of the URI.
+     *
      * @return string
      */
     public function getProtocol(): string;
 
     /**
+     * Retrieve the user name information component of the URI.
+     *
      * User name or empty string
      * @return string
      */
     public function getUserName(): string;
 
     /**
-     * Password or empty string
+     * Retrieve the password information component of the URI.
+     * Returns password or empty string
+     *
      * @return string
      */
     public function getPassword(): string;
@@ -175,6 +181,8 @@ interface UriInterface extends \Psr\Http\Message\UriInterface
     public function getQuery(): string;
 
     /**
+     * Retrieve the query params array (or iterable object) from the URI.
+     *
      * @7.1
      * @return iterable
      */
@@ -216,7 +224,8 @@ interface UriInterface extends \Psr\Http\Message\UriInterface
     public function withScheme($scheme = null);
 
     /**
-     * Alias for $this->withScheme()
+     * Alias for $this->withScheme() :
+     * Return an instance with the specified scheme.
      *
      * @param $protocol
      * @return static
@@ -224,12 +233,16 @@ interface UriInterface extends \Psr\Http\Message\UriInterface
     public function withProtocol(string $protocol = null);
 
     /**
+     * Return an instance with the specified user name.
+     *
      * @param string$userName
      * @return static
      */
     public function withUserName(string $userName);
 
     /**
+     * Return an instance with the specified password.
+     *
      * @param string $password
      * @return static
      */
@@ -237,12 +250,16 @@ interface UriInterface extends \Psr\Http\Message\UriInterface
 
     /**
      * Remove the password
+     * Return an instance without the password component.
+     *
      * @return static
      */
     public function withoutPassword();
 
     /**
-     * Remove thew user info
+     * Remove the user info
+     * Return an instance without the user info component.
+     *
      * @return static
      */
     public function withoutUserInfo();
@@ -263,6 +280,7 @@ interface UriInterface extends \Psr\Http\Message\UriInterface
 
     /**
      * Remove the host
+     * Return an instance without the host component.
      *
      * @return static A new instance without the host.
      */
@@ -289,6 +307,7 @@ interface UriInterface extends \Psr\Http\Message\UriInterface
 
     /**
      * Remove the port
+     * Return an instance without the port component.
      *
      * @return static A new instance without the specified port.
      * @throws \InvalidArgumentException for invalid ports.
@@ -296,6 +315,8 @@ interface UriInterface extends \Psr\Http\Message\UriInterface
     public function withoutPort();
 
     /**
+     * Return an instance with the specified query parameter and its value.
+     *
      * @param string $name
      * @param mixed $value
      * @return static
@@ -303,6 +324,9 @@ interface UriInterface extends \Psr\Http\Message\UriInterface
     public function withQueryParam(string $name, $value);
 
     /**
+     * Remove the query parameter
+     * Return an instance without the specified query parameter.
+     *
      * @param string $name
      * @return static
      */

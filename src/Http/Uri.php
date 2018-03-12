@@ -22,7 +22,8 @@ class Uri implements UriInterface
     protected $fragment;
 
     /**
-     * URI constructor.
+     * URI constructor
+     *
      * @param string $uri
      * @throws InvalidUrl
      */
@@ -43,6 +44,8 @@ class Uri implements UriInterface
     }
 
     /**
+     * Retrieve the scheme component of the URI.
+     *
      * @see https://tools.ietf.org/html/rfc3986#section-3.1
      * @return string The URI scheme.
      */
@@ -52,7 +55,9 @@ class Uri implements UriInterface
     }
 
     /**
-     * Alias for getScheme()
+     * Alias for $this->getScheme() :
+     * Retrieve the scheme component of the URI.
+     *
      * @return string
      */
     public function getProtocol(): string
@@ -61,6 +66,8 @@ class Uri implements UriInterface
     }
 
     /**
+     * Retrieve the user name information component of the URI.
+     *
      * User name or empty string
      * @return string
      */
@@ -70,7 +77,9 @@ class Uri implements UriInterface
     }
 
     /**
-     * Password or empty string
+     * Retrieve the password information component of the URI.
+     * Returns password or empty string
+     *
      * @return string
      */
     public function getPassword(): string
@@ -79,6 +88,8 @@ class Uri implements UriInterface
     }
 
     /**
+     * Retrieve the user information component of the URI.
+     *
      * @return string The URI user information, in "username[:password]" format.
      */
     public function getUserInfo(): string
@@ -93,6 +104,8 @@ class Uri implements UriInterface
     }
 
     /**
+     * Retrieve the host component of the URI.
+     *
      * @see http://tools.ietf.org/html/rfc3986#section-3.2.2
      * @return string The URI host.
      */
@@ -102,6 +115,8 @@ class Uri implements UriInterface
     }
 
     /**
+     * Retrieve the port component of the URI.
+     *
      * @return null|int The URI port.
      * @7.1
      */
@@ -114,6 +129,8 @@ class Uri implements UriInterface
     }
 
     /**
+     * Retrieve the authority component of the URI.
+     *
      * @see https://tools.ietf.org/html/rfc3986#section-3.2
      * @return string The URI authority, in "[user-info@]host[:port]" format.
      */
@@ -131,6 +148,8 @@ class Uri implements UriInterface
     }
 
     /**
+     * Retrieve the path component of the URI.
+     *
      * @see https://tools.ietf.org/html/rfc3986#section-2
      * @see https://tools.ietf.org/html/rfc3986#section-3.3
      * @return string The URI path.
@@ -141,6 +160,8 @@ class Uri implements UriInterface
     }
 
     /**
+     * Retrieve the query string of the URI.
+     *
      * @see https://tools.ietf.org/html/rfc3986#section-2
      * @see https://tools.ietf.org/html/rfc3986#section-3.4
      * @return string The URI query string.
@@ -151,8 +172,10 @@ class Uri implements UriInterface
     }
 
     /**
+     * Retrieve the query params array (or iterable object) from the URI.
+     *
      * @7.1
-     * @return Std
+     * @return iterable
      */
     public function getQueryParams()/*: iterable*/
     {
@@ -161,6 +184,8 @@ class Uri implements UriInterface
     }
 
     /**
+     * Retrieve the fragment component of the URI.
+     *
      * @see https://tools.ietf.org/html/rfc3986#section-2
      * @see https://tools.ietf.org/html/rfc3986#section-3.5
      * @return string The URI fragment.
@@ -185,6 +210,9 @@ class Uri implements UriInterface
     }
 
     /**
+     * Alias for $this->withScheme() :
+     * Return an instance with the specified scheme.
+     *
      * @param $protocol
      * @return static
      */
@@ -194,7 +222,9 @@ class Uri implements UriInterface
     }
 
     /**
-     * @param string $userName
+     * Return an instance with the specified user name.
+     *
+     * @param string$userName
      * @return static
      */
     public function withUserName(string $userName)
@@ -205,6 +235,8 @@ class Uri implements UriInterface
     }
 
     /**
+     * Return an instance with the specified password.
+     *
      * @param string $password
      * @return static
      */
@@ -217,6 +249,8 @@ class Uri implements UriInterface
 
     /**
      * Remove the password
+     * Return an instance without the password component.
+     *
      * @return static
      */
     public function withoutPassword()
@@ -225,6 +259,8 @@ class Uri implements UriInterface
     }
 
     /**
+     * Return an instance with the specified user information.
+     *
      * @param string $user The user name to use for authority.
      * @param null|string $password The password associated with $user.
      * @return static A new instance with the specified user information.
@@ -238,7 +274,8 @@ class Uri implements UriInterface
     }
 
     /**
-     * Remove thew user info
+     * Remove the user info
+     * Return an instance without the user info component.
      *
      * @return static
      */
@@ -269,6 +306,7 @@ class Uri implements UriInterface
 
     /**
      * Remove the host
+     * Return an instance without the host component.
      *
      * @return static A new instance without the host.
      */
@@ -299,6 +337,7 @@ class Uri implements UriInterface
 
     /**
      * Remove the port
+     * Return an instance without the port component.
      *
      * @return static A new instance without the specified port.
      * @throws \InvalidArgumentException for invalid ports.
@@ -327,14 +366,6 @@ class Uri implements UriInterface
     /**
      * Return an instance with the specified query string.
      *
-     * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified query string.
-     *
-     * Users can provide both encoded and decoded query characters.
-     * Implementations ensure the correct encoding as outlined in getQuery().
-     *
-     * An empty query string value is equivalent to removing the query string.
-     *
      * @param string $query The query string to use with the new instance.
      * @return static A new instance with the specified query string.
      * @throws \InvalidArgumentException for invalid query strings.
@@ -347,14 +378,6 @@ class Uri implements UriInterface
     /**
      * Return an instance with the specified URI fragment.
      *
-     * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified URI fragment.
-     *
-     * Users can provide both encoded and decoded fragment characters.
-     * Implementations ensure the correct encoding as outlined in getFragment().
-     *
-     * An empty fragment value is equivalent to removing the fragment.
-     *
      * @param string $fragment The fragment to use with the new instance.
      * @return static A new instance with the specified fragment.
      */
@@ -364,6 +387,8 @@ class Uri implements UriInterface
     }
 
     /**
+     * Return an instance with the specified query parameter and its value.
+     *
      * @param string $name
      * @param mixed $value
      * @return static
@@ -374,6 +399,9 @@ class Uri implements UriInterface
     }
 
     /**
+     * Remove the query parameter
+     * Return an instance without the specified query parameter.
+     *
      * @param string $name
      * @return static
      */
@@ -384,23 +412,6 @@ class Uri implements UriInterface
 
     /**
      * Return the string representation as a URI reference.
-     *
-     * Depending on which components of the URI are present, the resulting
-     * string is either a full URI or relative reference according to RFC 3986,
-     * Section 4.1. The method concatenates the various components of the URI,
-     * using the appropriate delimiters:
-     *
-     * - If a scheme is present, it MUST be suffixed by ":".
-     * - If an authority is present, it MUST be prefixed by "//".
-     * - The path can be concatenated without delimiters. But there are two
-     *   cases where the path has to be adjusted to make the URI reference
-     *   valid as PHP does not allow to throw an exception in __toString():
-     *     - If the path is rootless and an authority is present, the path MUST
-     *       be prefixed by "/".
-     *     - If the path is starting with more than one "/" and no authority is
-     *       present, the starting slashes MUST be reduced to one.
-     * - If a query is present, it MUST be prefixed by "?".
-     * - If a fragment is present, it MUST be prefixed by "#".
      *
      * @see http://tools.ietf.org/html/rfc3986#section-4.1
      * @return string
