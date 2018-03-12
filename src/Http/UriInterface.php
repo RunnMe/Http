@@ -263,9 +263,37 @@ interface UriInterface extends \Psr\Http\Message\UriInterface
 
     /**
      * Remove the host
+     *
      * @return static A new instance without the host.
      */
     public function withoutHost();
+
+    /**
+     * Return an instance with the specified port.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified port.
+     *
+     * Implementations MUST raise an exception for ports outside the
+     * established TCP and UDP port ranges.
+     *
+     * A null value provided for the port is equivalent to removing the port
+     * information.
+     *
+     * @param null|int $port The port to use with the new instance; a null value
+     *     removes the port information.
+     * @return static A new instance with the specified port.
+     * @throws \InvalidArgumentException for invalid ports.
+     */
+    public function withPort($port = null);
+
+    /**
+     * Remove the port
+     *
+     * @return static A new instance without the specified port.
+     * @throws \InvalidArgumentException for invalid ports.
+     */
+    public function withoutPort();
 
     /**
      * @param string $name

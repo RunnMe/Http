@@ -347,4 +347,41 @@ class UriTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('', $modified->getHost());
     }
 
+    public function testWithPort()
+    {
+        $uri = new Uri('http://test.com/');
+        $this->assertNull($uri->getPort());
+
+        $modified = $uri->withPort(80);
+        $this->assertInstanceOf(Uri::class, $modified);
+        $this->assertNotSame($modified, $uri);
+        $this->assertNull($modified->getPort());
+
+        $modified = $uri->withPort(81);
+        $this->assertInstanceOf(Uri::class, $modified);
+        $this->assertNotSame($modified, $uri);
+        $this->assertSame(81, $modified->getPort());
+    }
+
+    public function testWithoutPort()
+    {
+        $uri = new Uri('http://test.com:81/');
+        $this->assertSame(81, $uri->getPort());
+
+        $modified = $uri->withPort(0);
+        $this->assertInstanceOf(Uri::class, $modified);
+        $this->assertNotSame($modified, $uri);
+        $this->assertNull($modified->getPort());
+
+        $modified = $uri->withPort();
+        $this->assertInstanceOf(Uri::class, $modified);
+        $this->assertNotSame($modified, $uri);
+        $this->assertNull($modified->getPort());
+
+        $modified = $uri->withoutPort();
+        $this->assertInstanceOf(Uri::class, $modified);
+        $this->assertNotSame($modified, $uri);
+        $this->assertNull($modified->getPort());
+    }
+
 }
