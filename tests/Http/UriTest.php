@@ -310,4 +310,41 @@ class UriTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('', $modified->getPassword());
     }
 
+    public function testWithHost()
+    {
+        $uri = new Uri('http://test.com/');
+        $this->assertSame('test.com', $uri->getHost());
+
+        $modified = $uri->withHost('localhost');
+        $this->assertInstanceOf(Uri::class, $modified);
+        $this->assertNotSame($modified, $uri);
+        $this->assertSame('localhost', $modified->getHost());
+
+        $modified = $uri->withHost('eXaMpLe.Org');
+        $this->assertInstanceOf(Uri::class, $modified);
+        $this->assertNotSame($modified, $uri);
+        $this->assertSame('example.org', $modified->getHost());
+    }
+
+    public function testWithoutHost()
+    {
+        $uri = new Uri('http://test.com/');
+        $this->assertSame('test.com', $uri->getHost());
+
+        $modified = $uri->withHost('');
+        $this->assertInstanceOf(Uri::class, $modified);
+        $this->assertNotSame($modified, $uri);
+        $this->assertSame('', $modified->getHost());
+
+        $modified = $uri->withHost();
+        $this->assertInstanceOf(Uri::class, $modified);
+        $this->assertNotSame($modified, $uri);
+        $this->assertSame('', $modified->getHost());
+
+        $modified = $uri->withoutHost();
+        $this->assertInstanceOf(Uri::class, $modified);
+        $this->assertNotSame($modified, $uri);
+        $this->assertSame('', $modified->getHost());
+    }
+
 }

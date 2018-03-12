@@ -216,6 +216,7 @@ class Uri implements UriInterface
     }
 
     /**
+     * Remove the password
      * @return static
      */
     public function withoutPassword()
@@ -237,6 +238,7 @@ class Uri implements UriInterface
     }
 
     /**
+     * Remove thew user info
      * @return static
      */
     public function withoutUserInfo()
@@ -248,20 +250,29 @@ class Uri implements UriInterface
     }
 
     /**
-     * Return an instance with the specified host.
-     *
-     * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified host.
-     *
-     * An empty host value is equivalent to removing the host.
-     *
      * @param string $host The hostname to use with the new instance.
      * @return static A new instance with the specified host.
      * @throws \InvalidArgumentException for invalid hostnames.
      */
-    public function withHost($host)
+    public function withHost($host = null)
     {
-        // TODO: Implement withHost() method.
+        if (empty($host)) {
+            return $this->withoutHost();
+        }
+        $clone = clone $this;
+        $clone->host = strtolower($host);
+        return $clone;
+    }
+
+    /**
+     * Remove the host
+     * @return static A new instance without the host.
+     */
+    public function withoutHost()
+    {
+        $clone = clone $this;
+        $clone->host = '';
+        return $clone;
     }
 
     /**

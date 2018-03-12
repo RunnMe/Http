@@ -236,14 +236,36 @@ interface UriInterface extends \Psr\Http\Message\UriInterface
     public function withPassword(string $password = null);
 
     /**
+     * Remove the password
      * @return static
      */
     public function withoutPassword();
 
     /**
+     * Remove thew user info
      * @return static
      */
     public function withoutUserInfo();
+
+    /**
+     * Return an instance with the specified host.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified host.
+     *
+     * An empty host value is equivalent to removing the host.
+     *
+     * @param string $host The hostname to use with the new instance.
+     * @return static A new instance with the specified host.
+     * @throws \InvalidArgumentException for invalid hostnames.
+     */
+    public function withHost($host = null);
+
+    /**
+     * Remove the host
+     * @return static A new instance without the host.
+     */
+    public function withoutHost();
 
     /**
      * @param string $name
