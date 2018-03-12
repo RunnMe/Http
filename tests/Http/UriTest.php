@@ -427,4 +427,36 @@ class UriTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('', $modified->getQuery());
     }
 
+    public function testWithFragment()
+    {
+        $uri = new Uri('http://test.com/#foo-bar');
+        $this->assertSame('foo-bar', $uri->getFragment());
+
+        $modified = $uri->withFragment('baz');
+        $this->assertInstanceOf(Uri::class, $modified);
+        $this->assertNotSame($modified, $uri);
+        $this->assertSame('baz', $modified->getFragment());
+    }
+
+    public function testWithoutFragment()
+    {
+        $uri = new Uri('http://test.com/#foo-bar');
+        $this->assertSame('foo-bar', $uri->getFragment());
+
+        $modified = $uri->withFragment('');
+        $this->assertInstanceOf(Uri::class, $modified);
+        $this->assertNotSame($modified, $uri);
+        $this->assertSame('', $modified->getFragment());
+
+        $modified = $uri->withFragment();
+        $this->assertInstanceOf(Uri::class, $modified);
+        $this->assertNotSame($modified, $uri);
+        $this->assertSame('', $modified->getFragment());
+
+        $modified = $uri->withoutFragment();
+        $this->assertInstanceOf(Uri::class, $modified);
+        $this->assertNotSame($modified, $uri);
+        $this->assertSame('', $modified->getFragment());
+    }
+
 }

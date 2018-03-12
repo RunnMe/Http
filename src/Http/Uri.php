@@ -339,7 +339,7 @@ class Uri implements UriInterface
      * Remove the port
      * Return an instance without the port component.
      *
-     * @return static A new instance without the specified port.
+     * @return static A new instance without the port component.
      * @throws \InvalidArgumentException for invalid ports.
      */
     public function withoutPort()
@@ -423,9 +423,27 @@ class Uri implements UriInterface
      * @param string $fragment The fragment to use with the new instance.
      * @return static A new instance with the specified fragment.
      */
-    public function withFragment($fragment)
+    public function withFragment($fragment = null)
     {
-        // TODO: Implement withFragment() method.
+        if (empty($fragment)) {
+            return $this->withoutFragment();
+        }
+        $clone = clone $this;
+        $clone->fragment = (string)$fragment;
+        return $clone;
+    }
+
+    /**
+     * Remove the fragment
+     * Return an instance without the fragment component.
+     *
+     * @return static A new instance without the fragment.
+     */
+    public function withoutFragment()
+    {
+        $clone = clone $this;
+        $clone->fragment = '';
+        return $clone;
     }
 
     /**
@@ -438,4 +456,5 @@ class Uri implements UriInterface
     {
         // TODO: Implement __toString() method.
     }
+
 }

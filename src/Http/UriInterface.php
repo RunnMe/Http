@@ -309,7 +309,7 @@ interface UriInterface extends \Psr\Http\Message\UriInterface
      * Remove the port
      * Return an instance without the port component.
      *
-     * @return static A new instance without the specified port.
+     * @return static A new instance without the port component.
      * @throws \InvalidArgumentException for invalid ports.
      */
     public function withoutPort();
@@ -348,5 +348,21 @@ interface UriInterface extends \Psr\Http\Message\UriInterface
      * @return static
      */
     public function withoutQueryParam(string $name);
+
+    /**
+     * Return an instance with the specified URI fragment.
+     *
+     * @param string $fragment The fragment to use with the new instance.
+     * @return static A new instance with the specified fragment.
+     */
+    public function withFragment($fragment = null);
+
+    /**
+     * Remove the fragment
+     * Return an instance without the fragment component.
+     *
+     * @return static A new instance without the fragment.
+     */
+    public function withoutFragment();
 
 }
