@@ -384,4 +384,15 @@ class UriTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($modified->getPort());
     }
 
+    public function testWithPath()
+    {
+        $uri = new Uri('http://test.com/');
+        $this->assertSame('/', $uri->getPath());
+
+        $modified = $uri->withPath('/foo/bar');
+        $this->assertInstanceOf(Uri::class, $modified);
+        $this->assertNotSame($modified, $uri);
+        $this->assertSame('/foo/bar', $modified->getPath());
+    }
+
 }
