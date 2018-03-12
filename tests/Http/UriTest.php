@@ -395,4 +395,36 @@ class UriTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('/foo/bar', $modified->getPath());
     }
 
+    public function testWithQuery()
+    {
+        $uri = new Uri('http://test.com/?foo=bar');
+        $this->assertSame('foo=bar', $uri->getQuery());
+
+        $modified = $uri->withQuery('foo=bar&baz=bla');
+        $this->assertInstanceOf(Uri::class, $modified);
+        $this->assertNotSame($modified, $uri);
+        $this->assertSame('foo=bar&baz=bla', $modified->getQuery());
+    }
+
+    public function testWithoutQuery()
+    {
+        $uri = new Uri('http://test.com/?foo=bar');
+        $this->assertSame('foo=bar', $uri->getQuery());
+
+        $modified = $uri->withQuery('');
+        $this->assertInstanceOf(Uri::class, $modified);
+        $this->assertNotSame($modified, $uri);
+        $this->assertSame('', $modified->getQuery());
+
+        $modified = $uri->withQuery();
+        $this->assertInstanceOf(Uri::class, $modified);
+        $this->assertNotSame($modified, $uri);
+        $this->assertSame('', $modified->getQuery());
+
+        $modified = $uri->withoutQuery();
+        $this->assertInstanceOf(Uri::class, $modified);
+        $this->assertNotSame($modified, $uri);
+        $this->assertSame('', $modified->getQuery());
+    }
+
 }

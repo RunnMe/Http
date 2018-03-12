@@ -315,6 +315,23 @@ interface UriInterface extends \Psr\Http\Message\UriInterface
     public function withoutPort();
 
     /**
+     * Return an instance with the specified query string.
+     *
+     * @param string $query The query string to use with the new instance.
+     * @return static A new instance with the specified query string.
+     * @throws \InvalidArgumentException for invalid query strings.
+     */
+    public function withQuery($query = null);
+
+    /**
+     * Remove the query string
+     * Return an instance without the query string.
+     *
+     * @return static A new instance without the query string.
+     */
+    public function withoutQuery();
+
+    /**
      * Return an instance with the specified query parameter and its value.
      *
      * @param string $name

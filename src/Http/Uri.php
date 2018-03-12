@@ -224,7 +224,7 @@ class Uri implements UriInterface
     /**
      * Return an instance with the specified user name.
      *
-     * @param string$userName
+     * @param string $userName
      * @return static
      */
     public function withUserName(string $userName)
@@ -370,20 +370,27 @@ class Uri implements UriInterface
      * @return static A new instance with the specified query string.
      * @throws \InvalidArgumentException for invalid query strings.
      */
-    public function withQuery($query)
+    public function withQuery($query = null)
     {
-        // TODO: Implement withQuery() method.
+        if (empty($query)) {
+            return $this->withoutQuery();
+        }
+        $clone = clone $this;
+        $clone->query = (string)$query;
+        return $clone;
     }
 
     /**
-     * Return an instance with the specified URI fragment.
+     * Remove the query string
+     * Return an instance without the query string.
      *
-     * @param string $fragment The fragment to use with the new instance.
-     * @return static A new instance with the specified fragment.
+     * @return static A new instance without the query string.
      */
-    public function withFragment($fragment)
+    public function withoutQuery()
     {
-        // TODO: Implement withFragment() method.
+        $clone = clone $this;
+        $clone->query = '';
+        return $clone;
     }
 
     /**
@@ -408,6 +415,17 @@ class Uri implements UriInterface
     public function withoutQueryParam(string $name)
     {
         // TODO: Implement withoutQueryParam() method.
+    }
+
+    /**
+     * Return an instance with the specified URI fragment.
+     *
+     * @param string $fragment The fragment to use with the new instance.
+     * @return static A new instance with the specified fragment.
+     */
+    public function withFragment($fragment)
+    {
+        // TODO: Implement withFragment() method.
     }
 
     /**
