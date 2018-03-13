@@ -335,10 +335,10 @@ interface UriInterface extends \Psr\Http\Message\UriInterface
      * Return an instance with the specified query parameter and its value.
      *
      * @param string $name
-     * @param mixed $value
+     * @param string|null $value
      * @return static
      */
-    public function withQueryParam(string $name, $value);
+    public function withQueryParam(string $name, string $value = null);
 
     /**
      * Remove the query parameter

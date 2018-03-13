@@ -399,31 +399,75 @@ class UriTest extends \PHPUnit_Framework_TestCase
     {
         $uri = new Uri('http://test.com/?foo=bar');
         $this->assertSame('foo=bar', $uri->getQuery());
+        $this->assertEquals(new Std(['foo' => 'bar']), $uri->getQueryParams());
 
         $modified = $uri->withQuery('foo=bar&baz=bla');
         $this->assertInstanceOf(Uri::class, $modified);
         $this->assertNotSame($modified, $uri);
         $this->assertSame('foo=bar&baz=bla', $modified->getQuery());
+        $this->assertEquals(new Std(['foo'=>'bar', 'baz'=>'bla']), $modified->getQueryParams());
     }
 
     public function testWithoutQuery()
     {
         $uri = new Uri('http://test.com/?foo=bar');
         $this->assertSame('foo=bar', $uri->getQuery());
+        $this->assertEquals(new Std(['foo' => 'bar']), $uri->getQueryParams());
 
         $modified = $uri->withQuery('');
         $this->assertInstanceOf(Uri::class, $modified);
         $this->assertNotSame($modified, $uri);
         $this->assertSame('', $modified->getQuery());
+        $this->assertEquals(new Std([]), $modified->getQueryParams());
 
         $modified = $uri->withQuery();
         $this->assertInstanceOf(Uri::class, $modified);
         $this->assertNotSame($modified, $uri);
         $this->assertSame('', $modified->getQuery());
+        $this->assertEquals(new Std([]), $modified->getQueryParams());
 
         $modified = $uri->withoutQuery();
         $this->assertInstanceOf(Uri::class, $modified);
         $this->assertNotSame($modified, $uri);
+        $this->assertSame('', $modified->getQuery());
+        $this->assertEquals(new Std([]), $modified->getQueryParams());
+    }
+
+    public function testWithQueryParam()
+    {
+        $uri = new Uri('http://test.com/?foo=bar');
+        $this->assertEquals(new Std(['foo' => 'bar']), $uri->getQueryParams());
+        $this->assertSame('foo=bar', $uri->getQuery());
+
+        $modified = $uri->withQueryParam('foo', 42);
+        $this->assertInstanceOf(Uri::class, $modified);
+        $this->assertNotSame($modified, $uri);
+        $this->assertEquals(new Std(['foo' => 42]), $modified->getQueryParams());
+        $this->assertSame('foo=42', $modified->getQuery());
+
+        $modified = $uri->withQueryParam('baz', 'bla');
+        $this->assertInstanceOf(Uri::class, $modified);
+        $this->assertNotSame($modified, $uri);
+        $this->assertEquals(new Std(['foo' => 'bar', 'baz' => 'bla']), $modified->getQueryParams());
+        $this->assertSame('foo=bar&baz=bla', $modified->getQuery());
+    }
+
+    public function testWithoutQueryParam()
+    {
+        $uri = new Uri('http://test.com/?foo=bar');
+        $this->assertEquals(new Std(['foo' => 'bar']), $uri->getQueryParams());
+        $this->assertSame('foo=bar', $uri->getQuery());
+
+        $modified = $uri->withQueryParam('foo', null);
+        $this->assertInstanceOf(Uri::class, $modified);
+        $this->assertNotSame($modified, $uri);
+        $this->assertEquals(new Std([]), $modified->getQueryParams());
+        $this->assertSame('', $modified->getQuery());
+
+        $modified = $uri->withQueryParam('foo');
+        $this->assertInstanceOf(Uri::class, $modified);
+        $this->assertNotSame($modified, $uri);
+        $this->assertEquals(new Std([]), $modified->getQueryParams());
         $this->assertSame('', $modified->getQuery());
     }
 

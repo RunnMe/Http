@@ -19,6 +19,7 @@ class Uri implements UriInterface
     protected $port;
     protected $path;
     protected $query;
+    protected $params;
     protected $fragment;
 
     /**
@@ -40,6 +41,7 @@ class Uri implements UriInterface
         $this->port = $parts['port'] ?? null;
         $this->path = $parts['path'] ?? '';
         $this->query = $parts['query'] ?? '';
+        parse_str($this->query, $this->params);
         $this->fragment = $parts['fragment'] ?? '';
     }
 
@@ -179,8 +181,7 @@ class Uri implements UriInterface
      */
     public function getQueryParams()/*: iterable*/
     {
-        parse_str($this->getQuery(), $res);
-        return new Std($res);
+        return new Std($this->params);
     }
 
     /**
@@ -377,6 +378,7 @@ class Uri implements UriInterface
         }
         $clone = clone $this;
         $clone->query = (string)$query;
+        parse_str($clone->query, $clone->params);
         return $clone;
     }
 
@@ -390,6 +392,7 @@ class Uri implements UriInterface
     {
         $clone = clone $this;
         $clone->query = '';
+        $clone->params = [];
         return $clone;
     }
 
@@ -397,12 +400,18 @@ class Uri implements UriInterface
      * Return an instance with the specified query parameter and its value.
      *
      * @param string $name
-     * @param mixed $value
+     * @param string $value
      * @return static
      */
-    public function withQueryParam(string $name, $value)
+    public function withQueryParam(string $name, string $value = null)
     {
-        // TODO: Implement withQueryParam() method.
+        $clone = clone $this;
+        if (null === $value) {
+            return $this->withoutQueryParam($name);
+        }
+        $clone->params[$name] = $value;
+        $clone->query = http_build_query($clone->params);
+        return $clone;
     }
 
     /**
@@ -414,7 +423,10 @@ class Uri implements UriInterface
      */
     public function withoutQueryParam(string $name)
     {
-        // TODO: Implement withoutQueryParam() method.
+        $clone = clone $this;
+        unset($clone->params[$name]);
+        $clone->query = http_build_query($clone->params);
+        return $clone;
     }
 
     /**
