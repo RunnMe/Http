@@ -464,9 +464,34 @@ class Uri implements UriInterface
      * @see http://tools.ietf.org/html/rfc3986#section-4.1
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
-        // TODO: Implement __toString() method.
+        $scheme = $this->getScheme();
+        $authority = $this->getAuthority();
+        $path = $this->getPath();
+        $query = $this->getQuery();
+        $fragment = $this->getFragment();
+
+        $uri = '';
+        if (!empty($scheme)) {
+            $uri .= $scheme . ':';
+        }
+        if (!empty($authority)) {
+            $uri .= '//' . $authority;
+        }
+        if (!empty($path)) {
+            if (empty($authority) || '/' !== $path[0]) {
+                $path = '/' . ltrim($path, '/');
+            }
+            $uri .= $path;
+        }
+        if (!empty($query)) {
+            $uri .= '?' . $query;
+        }
+        if (!empty($fragment)) {
+            $uri .= '#' . $fragment;
+        }
+        return $uri;
     }
 
 }
