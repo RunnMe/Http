@@ -503,4 +503,34 @@ class UriTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('', $modified->getFragment());
     }
 
+    public function testToString()
+    {
+        $uri = new Uri('//test.com');
+        $this->assertSame('//test.com', (string)$uri);
+
+        $uri = $uri->withScheme('https');
+        $this->assertSame('https://test.com', (string)$uri);
+
+        $modified = $uri->withUserName('user')->withPassword('password');
+        $this->assertSame('https://user:password@test.com', (string)$modified);
+
+        $modified = $uri->withPath('foo');
+        $this->assertSame('https://test.com/foo', (string)$modified);
+
+        $modified = $uri->withoutHost()->withPath('//foo');
+        $this->assertSame('https:/foo', (string)$modified);
+
+        $modified = $uri->withQuery('buz=something');
+        $this->assertSame('https://test.com?buz=something', (string)$modified);
+
+        $modified = $uri->withPath('/foo/bar')->withQuery('buz=something');
+        $this->assertSame('https://test.com/foo/bar?buz=something', (string)$modified);
+
+        $modified = $modified->withFragment('else');
+        $this->assertSame('https://test.com/foo/bar?buz=something#else', (string)$modified);
+
+        $modified = $modified->withUserName('user')->withPassword('password');
+        $this->assertSame('https://user:password@test.com/foo/bar?buz=something#else', (string)$modified);
+    }
+
 }

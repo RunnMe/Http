@@ -365,4 +365,11 @@ interface UriInterface extends \Psr\Http\Message\UriInterface
      */
     public function withoutFragment();
 
+    /**
+     * Return the string representation as a URI reference.
+     *
+     * @see http://tools.ietf.org/html/rfc3986#section-4.1
+     * @return string
+     */
+    public function __toString(): string;
 }
