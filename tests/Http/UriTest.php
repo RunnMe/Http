@@ -8,9 +8,12 @@ use Runn\Http\Uri;
 class UriTest extends \PHPUnit_Framework_TestCase
 {
 
+    /**
+     * @expectedException \Runn\Http\Exceptions\InvalidUrl
+     */
     public function testMalformed()
     {
-        // @todo malformed URL
+        $uri = new Uri('///');
     }
 
     public function testScheme()
