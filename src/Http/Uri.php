@@ -3,7 +3,7 @@
 namespace Runn\Http;
 
 use Runn\Core\Std;
-use Runn\Http\Exceptions\InvalidUrl;
+use Runn\Http\Exceptions\InvalidUri;
 
 /**
  * Class Uri
@@ -26,13 +26,13 @@ class Uri implements UriInterface
      * URI constructor
      *
      * @param string $uri
-     * @throws InvalidUrl
+     * @throws InvalidUri
      */
     public function __construct(string $uri)
     {
         $parts = parse_url($uri);
         if (false === $parts) {
-            throw new InvalidUrl('Invalid URL');
+            throw new InvalidUri('Invalid URI');
         }
         $this->scheme = strtolower($parts['scheme'] ?? '');
         $this->username = $parts['user'] ?? '';

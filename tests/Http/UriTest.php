@@ -9,7 +9,7 @@ class UriTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     * @expectedException \Runn\Http\Exceptions\InvalidUrl
+     * @expectedException \Runn\Http\Exceptions\InvalidUri
      */
     public function testMalformed()
     {
