@@ -13,7 +13,11 @@ interface ServerActionInterface
 {
     /**
      * @param ServerRequestInterface $request
+     * @param ResponseInterface $previousResponse
      * @return ResponseInterface
      */
-    public function __invoke(ServerRequestInterface $request): ResponseInterface;
+    public function __invoke(
+        ServerRequestInterface $request,
+        ResponseInterface $previousResponse = null
+    ): ResponseInterface;
 }

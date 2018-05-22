@@ -11,10 +11,10 @@ interface ServerActionsInterface extends ServerActionInterface
     /**
      * @param ServerActionInterface $action
      */
-    public function setAsFirstAction(ServerActionInterface $action): void;
+    public function setAsFirstAction(ServerActionInterface $action)/*@7.1*//*: void*/;
 
     /**
      * @param ServerActionInterface $action
      */
-    public function setAsLastAction(ServerActionInterface $action): void;
+    public function setAsLastAction(ServerActionInterface $action)/*@7.1*//*: void*/;
 }

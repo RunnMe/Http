@@ -15,6 +15,6 @@ class ActionsCollection extends TypedCollection
      */
     public static function getType()
     {
-        return ServerActionsInterface::class;
+        return ServerActionInterface::class;
     }
 }

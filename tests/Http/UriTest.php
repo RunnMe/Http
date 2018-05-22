@@ -2,10 +2,11 @@
 
 namespace Runn\tests\Http\Uri;
 
+use PHPUnit\Framework\TestCase;
 use Runn\Core\Std;
 use Runn\Http\Uri;
 
-class UriTest extends \PHPUnit_Framework_TestCase
+class UriTest extends TestCase
 {
 
     /**

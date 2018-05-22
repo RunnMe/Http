@@ -26,25 +26,29 @@ final class ServerActions implements ServerActionsInterface
 
     /**
      * @param ServerRequestInterface|null $request
+     * @param ResponseInterface|null $previousResponse
      * @return ResponseInterface
      * @throws EmptyActions
      * @throws InvalidRequest
      */
-    public function __invoke(?ServerRequestInterface $request): ResponseInterface
-    {
-        if (null === $request) {
+    public function __invoke(
+        /*@7.1*//*?*/ServerRequestInterface $request,
+        ResponseInterface $previousResponse = null
+    ): ResponseInterface {
+        /*@7.1*/
+        /*        if (null === $request) {
             throw new InvalidRequest('Request is empty.');
-        }
+        }*/
 
         if ($this->actions->empty()) {
             throw new EmptyActions('Action list is empty.');
         }
 
-        $response = $request;
+        $response = null;
         /** @var ServerActionInterface $action */
         foreach ($this->actions as $action) {
             /** @noinspection NullPointerExceptionInspection */
-            $response = $action($response);
+            $response = $action($request, $response);
         }
 
         return $response;
@@ -53,7 +57,7 @@ final class ServerActions implements ServerActionsInterface
     /**
      * @param ServerActionInterface $action
      */
-    public function setAsFirstAction(ServerActionInterface $action): void
+    public function setAsFirstAction(ServerActionInterface $action)//@7.1: void
     {
         $this->actions->prepend($action);
     }
@@ -61,7 +65,7 @@ final class ServerActions implements ServerActionsInterface
     /**
      * @param ServerActionInterface $action
      */
-    public function setAsLastAction(ServerActionInterface $action): void
+    public function setAsLastAction(ServerActionInterface $action)//@7.1: void
     {
         $this->actions->append($action);
     }
