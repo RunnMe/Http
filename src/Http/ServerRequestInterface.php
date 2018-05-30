@@ -8,10 +8,16 @@ namespace Runn\Http;
  */
 interface ServerRequestInterface extends \Psr\Http\Message\ServerRequestInterface
 {
+    const PHP_INPUT = 'php://input';
+
     /**
-     * Creates object from $_SERVER, $_REQUEST, $_COOKIE, $_FILES
+     * Creates object from $_SERVER and php://input
+     * @param array|null $server
+     * @param string $stream
      * @return ServerRequestInterface
      */
-    public static function constructFromGlobals(): ServerRequestInterface;
-
+    public static function constructFromGlobals(
+        array $server = null,
+        string $stream = self::PHP_INPUT
+    ): ServerRequestInterface;
 }
