@@ -99,26 +99,26 @@ trait MarshalParametersTrait
      * @return array
      * @throws InvalidArgumentException for unrecognized values
      */
-    private static function normalizeFiles(array $files): array
-    {
-        $normalized = [];
-        foreach ($files as $key => $value) {
-            if ($value instanceof UploadedFileInterface) {
-                $normalized[$key] = $value;
-                continue;
-            }
-            if (\is_array($value) && isset($value['tmp_name'])) {
-                $normalized[$key] = self::createUploadedFileFromSpec($value);
-                continue;
-            }
-            if (\is_array($value)) {
-                $normalized[$key] = self::normalizeFiles($value);
-                continue;
-            }
-            throw new InvalidArgumentException('Invalid value in files specification');
-        }
-        return $normalized;
-    }
+//    private static function normalizeFiles(array $files): array
+//    {
+//        $normalized = [];
+//        foreach ($files as $key => $value) {
+//            if ($value instanceof UploadedFileInterface) {
+//                $normalized[$key] = $value;
+//                continue;
+//            }
+//            if (\is_array($value) && isset($value['tmp_name'])) {
+//                $normalized[$key] = self::createUploadedFileFromSpec($value);
+//                continue;
+//            }
+//            if (\is_array($value)) {
+//                $normalized[$key] = self::normalizeFiles($value);
+//                continue;
+//            }
+//            throw new InvalidArgumentException('Invalid value in files specification');
+//        }
+//        return $normalized;
+//    }
 
     /**
      * Marshal headers from $_SERVER
