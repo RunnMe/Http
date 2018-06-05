@@ -3,9 +3,9 @@
 namespace Runn\Http\Exceptions;
 
 /**
- * Class InvalidUri
+ * Class UnexpectedValueException
  * @package Runn\Http\Exceptions
  */
-class InvalidUri extends Exception
+class UnexpectedValueException extends Exception
 {
 }

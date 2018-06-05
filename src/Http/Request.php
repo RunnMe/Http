@@ -19,19 +19,14 @@ class Request extends ServerRequest implements ServerRequestInterface
      * @param string $stream
      * @return ServerRequestInterface
      * @throws Exceptions\InvalidUri
+     * @throws Exceptions\UnexpectedValueException
      */
     public static function constructFromGlobals(
         array $server = null,
         string $stream = self::PHP_INPUT
     ): ServerRequestInterface {
         $server = self::normalizeServer($server ?? $_SERVER);
-//        $request = $request ?? $_REQUEST;
-//        $files = self::normalizeFiles($files ?? $_FILES);
-
         $headers = self::marshalHeaders($server);
-//        if (null === $cookie && array_key_exists('cookie', $headers)) {
-//            $cookie = self::parseCookieHeader($headers['cookie']);
-//        }
 
         $method = $server['REQUEST_METHOD'] ?? 'GET';
         $uri = static::marshalUriFromServer($server, $headers);
