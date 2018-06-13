@@ -112,6 +112,17 @@ interface UriInterface extends \Psr\Http\Message\UriInterface
     public function getPort()/*: ?int*/;
 
     /**
+     * Retrieve the port component of the URI.
+     *
+     * If no port is present, but a scheme is present, this method returns
+     * the standard port for that scheme.
+     *
+     * @return null|int The URI port.
+     * @7.1
+     */
+    public function getPortNumber()/*: ?int*/;
+
+    /**
      * Retrieve the authority component of the URI.
      *
      * If no authority information is present, this method MUST return an empty

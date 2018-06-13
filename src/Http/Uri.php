@@ -131,6 +131,21 @@ class Uri implements UriInterface
     }
 
     /**
+     * Retrieve the port component of the URI.
+     *
+     * @return null|int The URI port.
+     * @7.1
+     */
+    public function getPortNumber()/*: ?int*/
+    {
+        if ($this->port === null) {
+            return static::PORTS[$this->getScheme()] ?? null;
+        }
+
+        return $this->port;
+    }
+
+    /**
      * Retrieve the authority component of the URI.
      *
      * @see https://tools.ietf.org/html/rfc3986#section-3.2

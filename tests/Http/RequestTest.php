@@ -2,12 +2,15 @@
 
 namespace Runn\tests\Http;
 
+use phpmock\phpunit\PHPMock;
 use PHPUnit\Framework\TestCase;
 use Runn\Http\Request;
 use Runn\Http\Uri;
 
 class RequestTest extends TestCase
 {
+    use PHPMock;
+
     public function testCreateEmptyRequest()
     {
         $request = Request::constructFromGlobals([]);
@@ -60,6 +63,37 @@ class RequestTest extends TestCase
             'ORIG_PATH_INFO' => '/real_page',
         ]);
         $this->assertEquals(new Uri('http://example.net/real_page'), $request->getUri());
+    }
+
+    public function testHeaders()
+    {
+        $request = Request::constructFromGlobals([
+            'HTTP_HOST' => 'example.org',
+            'REDIRECT_HTTP_HOST' => 'example.net',
+            'CONTENT_TYPE' => 'text/html',
+        ]);
+        $this->assertCount(1, $request->getHeader('Host'));
+        $this->assertSame('example.org', $request->getHeader('Host')[0]);
+        $request = Request::constructFromGlobals([
+            'REDIRECT_HTTP_HOST' => 'example.net',
+        ]);
+        $this->assertSame('example.net', $request->getHeaderLine('hOST'));
+    }
+
+    public function testHostAndPortExtract()
+    {
+        $request = Request::constructFromGlobals([
+            'SERVER_NAME' => 'foo',
+            'SERVER_PORT' => '80',
+        ]);
+        $this->assertSame(80, $request->getUri()->getPortNumber());
+        $this->assertSame('foo', $request->getUri()->getHost());
+        $request = Request::constructFromGlobals([
+            'SERVER_ADDR' => 'FE80::0202:B3FF:FE1E:8329:80',
+            'SERVER_NAME' => '[FE80::0202:B3FF:FE1E:8329:80]',
+        ]);
+        $this->assertSame(80, $request->getUri()->getPortNumber());
+        $this->assertSame('[fe80::0202:b3ff:fe1e:8329:80]', $request->getUri()->getHost());
     }
 
     public function testProtocolVersion()

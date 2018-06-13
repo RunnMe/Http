@@ -48,7 +48,7 @@ trait MarshalParametersTrait
      */
     private static function getHeaderFromArray($header, array $headers, $default = null): string
     {
-        $header  = strtolower($header);
+        $header = strtolower($header);
         $headers = array_change_key_case($headers, CASE_LOWER);
         if (array_key_exists($header, $headers)) {
             $value = \is_array($headers[$header]) ? implode(', ', $headers[$header]) : $headers[$header];
@@ -70,7 +70,7 @@ trait MarshalParametersTrait
         // This seems to be the only way to get the Authorization header on Apache
         $apacheRequestHeaders = self::$apacheRequestHeaders;
         if (isset($server['HTTP_AUTHORIZATION'])
-            || ! \is_callable($apacheRequestHeaders)
+            || !\is_callable($apacheRequestHeaders)
         ) {
             return $server;
         }
@@ -133,7 +133,7 @@ trait MarshalParametersTrait
         $uri = new Uri('');
         // URI scheme
         $scheme = 'http';
-        $https  = self::get('HTTPS', $server);
+        $https = self::get('HTTPS', $server);
         if (($https && 'off' !== $https)
             || self::getHeaderFromArray('x-forwarded-proto', $headers, false) === 'https'
         ) {
@@ -141,13 +141,13 @@ trait MarshalParametersTrait
         }
         $uri = $uri->withScheme($scheme);
         // Set the host
-        $accumulator = (object) ['host' => '', 'port' => null];
+        $accumulator = (object)['host' => '', 'port' => null];
         self::marshalHostAndPortFromHeaders($accumulator, $server, $headers);
         $host = $accumulator->host;
         $port = $accumulator->port;
-        if (! empty($host)) {
+        if (!empty($host)) {
             $uri = $uri->withHost($host);
-            if (! empty($port)) {
+            if (!empty($port)) {
                 $uri = $uri->withPort($port);
             }
         }
@@ -183,20 +183,21 @@ trait MarshalParametersTrait
             self::marshalHostAndPortFromHeader($accumulator, self::getHeaderFromArray('host', $headers));
             return;
         }
-        if (! isset($server['SERVER_NAME'])) {
+        if (!isset($server['SERVER_NAME'])) {
             return;
         }
         $accumulator->host = $server['SERVER_NAME'];
         if (isset($server['SERVER_PORT'])) {
-            $accumulator->port = (int) $server['SERVER_PORT'];
+            $accumulator->port = (int)$server['SERVER_PORT'];
         }
-        if (! isset($server['SERVER_ADDR']) || ! preg_match('/^\[[0-9a-fA-F\:]+\]$/', $accumulator->host)) {
+        if (!isset($server['SERVER_ADDR']) || !preg_match('/^\[[0-9a-fA-F\:]+\]$/', $accumulator->host)) {
             return;
         }
         // Misinterpreted IPv6-Address
         // Reported for Safari on Windows
         self::marshalIpv6HostAndPort($accumulator, $server);
     }
+
     /**
      * Detect the base URI for the request
      *
@@ -215,8 +216,8 @@ trait MarshalParametersTrait
         // IIS7 with URL Rewrite: make sure we get the unencoded url
         // (double slash problem).
         $iisUrlRewritten = self::get('IIS_WasUrlRewritten', $server);
-        $unencodedUrl    = self::get('UNENCODED_URL', $server, '');
-        if ('1' === $iisUrlRewritten && ! empty($unencodedUrl)) {
+        $unencodedUrl = self::get('UNENCODED_URL', $server, '');
+        if ('1' === $iisUrlRewritten && !empty($unencodedUrl)) {
             return $unencodedUrl;
         }
         $requestUri = self::get('REQUEST_URI', $server);
@@ -258,20 +259,17 @@ trait MarshalParametersTrait
      * Marshal the host and port from the request header
      *
      * @param stdClass $accumulator
-     * @param string|array $host
+     * @param string $host
      * @return void
      */
     private static function marshalHostAndPortFromHeader(stdClass $accumulator, $host)
     {
-        if (\is_array($host)) {
-            $host = implode(', ', $host);
-        }
         $accumulator->host = $host;
         $accumulator->port = null;
         // works for regname, IPv4 & IPv6
         if (preg_match('|\:(\d+)$|', $accumulator->host, $matches)) {
             $accumulator->host = substr($accumulator->host, 0, -1 * (\strlen($matches[1]) + 1));
-            $accumulator->port = (int) $matches[1];
+            $accumulator->port = (int)$matches[1];
         }
     }
 
@@ -301,10 +299,10 @@ trait MarshalParametersTrait
      */
     private static function marshalProtocolVersion(array $server): string
     {
-        if (! isset($server['SERVER_PROTOCOL'])) {
+        if (!isset($server['SERVER_PROTOCOL'])) {
             return '1.1';
         }
-        if (! preg_match('#^(HTTP/)?(?P<version>[1-9]\d*(?:\.\d)?)$#', $server['SERVER_PROTOCOL'], $matches)) {
+        if (!preg_match('#^(HTTP/)?(?P<version>[1-9]\d*(?:\.\d)?)$#', $server['SERVER_PROTOCOL'], $matches)) {
             throw new UnexpectedValueException(sprintf(
                 'Unrecognized protocol version (%s)',
                 $server['SERVER_PROTOCOL']
