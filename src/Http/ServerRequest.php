@@ -20,6 +20,8 @@ class ServerRequest extends \GuzzleHttp\Psr7\ServerRequest implements ServerRequ
      * REQUIRED to originate from $_SERVER.
      *
      * @return array
+     *
+     * @codeCoverageIgnore
      */
     public function getServerParams(): array
     {
@@ -35,6 +37,8 @@ class ServerRequest extends \GuzzleHttp\Psr7\ServerRequest implements ServerRequ
      * superglobal.
      *
      * @return array
+     *
+     * @codeCoverageIgnore
      */
     public function getCookieParams(): array
     {
@@ -57,6 +61,8 @@ class ServerRequest extends \GuzzleHttp\Psr7\ServerRequest implements ServerRequ
      *
      * @param array $cookies Array of key/value pairs representing cookies.
      * @return static
+     *
+     * @codeCoverageIgnore
      */
     public function withCookieParams(array $cookies): ServerRequestInterface
     {
@@ -74,6 +80,8 @@ class ServerRequest extends \GuzzleHttp\Psr7\ServerRequest implements ServerRequ
      * or from the `QUERY_STRING` server param.
      *
      * @return array
+     *
+     * @codeCoverageIgnore
      */
     public function getQueryParams(): array
     {
@@ -101,6 +109,8 @@ class ServerRequest extends \GuzzleHttp\Psr7\ServerRequest implements ServerRequ
      * @param array $query Array of query string arguments, typically from
      *     $_GET.
      * @return static
+     *
+     * @codeCoverageIgnore
      */
     public function withQueryParams(array $query): ServerRequestInterface
     {
@@ -118,6 +128,8 @@ class ServerRequest extends \GuzzleHttp\Psr7\ServerRequest implements ServerRequ
      *
      * @return array An array tree of UploadedFileInterface instances; an empty
      *     array MUST be returned if no data is present.
+     *
+     * @codeCoverageIgnore
      */
     public function getUploadedFiles(): array
     {
@@ -134,6 +146,8 @@ class ServerRequest extends \GuzzleHttp\Psr7\ServerRequest implements ServerRequ
      * @param array $uploadedFiles An array tree of UploadedFileInterface instances.
      * @return static
      * @throws \InvalidArgumentException if an invalid structure is provided.
+     *
+     * @codeCoverageIgnore
      */
     public function withUploadedFiles(array $uploadedFiles): ServerRequestInterface
     {
@@ -155,6 +169,7 @@ class ServerRequest extends \GuzzleHttp\Psr7\ServerRequest implements ServerRequ
      * @return null|array|object The deserialized body parameters, if any.
      *     These will typically be an array or object.
      *
+     * @codeCoverageIgnore
      * @7.1
      */
     public function getParsedBody()/*: ?array*/
@@ -189,6 +204,8 @@ class ServerRequest extends \GuzzleHttp\Psr7\ServerRequest implements ServerRequ
      * @return static
      * @throws \InvalidArgumentException if an unsupported argument type is
      *     provided.
+     *
+     * @codeCoverageIgnore
      */
     public function withParsedBody($data): ServerRequestInterface
     {
@@ -205,6 +222,8 @@ class ServerRequest extends \GuzzleHttp\Psr7\ServerRequest implements ServerRequ
      * will be application and request specific, and CAN be mutable.
      *
      * @return array Attributes derived from the request.
+     *
+     * @codeCoverageIgnore
      */
     public function getAttributes(): array
     {
@@ -225,6 +244,8 @@ class ServerRequest extends \GuzzleHttp\Psr7\ServerRequest implements ServerRequ
      * @param string $name The attribute name.
      * @param mixed $value The value of the attribute.
      * @return static
+     *
+     * @codeCoverageIgnore
      */
     public function withAttribute($name, $value): ServerRequestInterface
     {
@@ -244,6 +265,8 @@ class ServerRequest extends \GuzzleHttp\Psr7\ServerRequest implements ServerRequ
      * @see getAttributes()
      * @param string $name The attribute name.
      * @return static
+     *
+     * @codeCoverageIgnore
      */
     public function withoutAttribute($name): ServerRequestInterface
     {

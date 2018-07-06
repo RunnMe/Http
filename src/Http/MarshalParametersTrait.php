@@ -2,8 +2,8 @@
 
 namespace Runn\Http;
 
+use Runn\Core\Std;
 use Runn\Http\Exceptions\UnexpectedValueException;
-use stdClass;
 
 trait MarshalParametersTrait
 {
@@ -69,8 +69,10 @@ trait MarshalParametersTrait
     {
         // This seems to be the only way to get the Authorization header on Apache
         $apacheRequestHeaders = self::$apacheRequestHeaders;
-        if (isset($server['HTTP_AUTHORIZATION'])
-            || !\is_callable($apacheRequestHeaders)
+        if (
+            isset($server['HTTP_AUTHORIZATION'])
+            ||
+            !\is_callable($apacheRequestHeaders)
         ) {
             return $server;
         }
@@ -98,7 +100,7 @@ trait MarshalParametersTrait
         foreach ($server as $key => $value) {
             // Apache prefixes environment variables with REDIRECT_
             // if they are added by rewrite rules
-            if (strpos($key, 'REDIRECT_') === 0) {
+            if (0 === strpos($key, 'REDIRECT_')) {
                 $key = substr($key, 9);
                 // We will not overwrite existing variables with the
                 // prefixed versions, though
@@ -106,12 +108,12 @@ trait MarshalParametersTrait
                     continue;
                 }
             }
-            if ($value && strpos($key, 'HTTP_') === 0) {
+            if ($value && 0 === strpos($key, 'HTTP_')) {
                 $name = str_replace('_', '-', strtolower(substr($key, 5)));
                 $headers[$name] = $value;
                 continue;
             }
-            if ($value && strpos($key, 'CONTENT_') === 0) {
+            if ($value && 0 === strpos($key, 'CONTENT_')) {
                 $name = 'content-' . strtolower(substr($key, 8));
                 $headers[$name] = $value;
                 continue;
@@ -131,17 +133,21 @@ trait MarshalParametersTrait
     private static function marshalUriFromServer(array $server, array $headers): Uri
     {
         $uri = new Uri('');
+
         // URI scheme
         $scheme = 'http';
         $https = self::get('HTTPS', $server);
-        if (($https && 'off' !== $https)
-            || self::getHeaderFromArray('x-forwarded-proto', $headers, false) === 'https'
+        if (
+            ($https && 'off' !== $https)
+            ||
+            'https' === self::getHeaderFromArray('x-forwarded-proto', $headers, false)
         ) {
             $scheme = 'https';
         }
         $uri = $uri->withScheme($scheme);
+
         // Set the host
-        $accumulator = (object)['host' => '', 'port' => null];
+        $accumulator = new Std(['host' => '', 'port' => null]);
         self::marshalHostAndPortFromHeaders($accumulator, $server, $headers);
         $host = $accumulator->host;
         $port = $accumulator->port;
@@ -151,19 +157,24 @@ trait MarshalParametersTrait
                 $uri = $uri->withPort($port);
             }
         }
+
         // URI path
         $path = self::marshalRequestUri($server);
         $path = self::stripQueryString($path);
+
         // URI query
         $query = '';
         if (isset($server['QUERY_STRING'])) {
             $query = ltrim($server['QUERY_STRING'], '?');
         }
+
         // URI fragment
         $fragment = '';
         if (strpos($path, '#') !== false) {
+            // @7.1 @todo [] = ...
             list($path, $fragment) = explode('#', $path, 2);
         }
+
         return $uri
             ->withPath($path)
             ->withFragment($fragment)
@@ -173,11 +184,11 @@ trait MarshalParametersTrait
     /**
      * Marshal the host and port from HTTP headers and/or the PHP environment
      *
-     * @param stdClass $accumulator
+     * @param Std $accumulator
      * @param array $server
      * @param array $headers
      */
-    private static function marshalHostAndPortFromHeaders(stdClass $accumulator, array $server, array $headers)
+    private static function marshalHostAndPortFromHeaders(Std $accumulator, array $server, array $headers)
     {
         if (self::getHeaderFromArray('host', $headers, false)) {
             self::marshalHostAndPortFromHeader($accumulator, self::getHeaderFromArray('host', $headers));
@@ -221,11 +232,13 @@ trait MarshalParametersTrait
             return $unencodedUrl;
         }
         $requestUri = self::get('REQUEST_URI', $server);
+
         // Check this first so IIS will catch.
         $httpXRewriteUrl = self::get('HTTP_X_REWRITE_URL', $server);
         if ($httpXRewriteUrl !== null) {
             $requestUri = $httpXRewriteUrl;
         }
+
         // Check for IIS 7.0 or later with ISAPI_Rewrite
         $httpXOriginalUrl = self::get('HTTP_X_ORIGINAL_URL', $server);
         if ($httpXOriginalUrl !== null) {
@@ -238,6 +251,7 @@ trait MarshalParametersTrait
         if (empty($origPathInfo)) {
             return '/';
         }
+
         return $origPathInfo;
     }
 
@@ -258,11 +272,11 @@ trait MarshalParametersTrait
     /**
      * Marshal the host and port from the request header
      *
-     * @param stdClass $accumulator
+     * @param Std $accumulator
      * @param string $host
      * @return void
      */
-    private static function marshalHostAndPortFromHeader(stdClass $accumulator, $host)
+    private static function marshalHostAndPortFromHeader(Std $accumulator, $host)
     {
         $accumulator->host = $host;
         $accumulator->port = null;
@@ -276,10 +290,10 @@ trait MarshalParametersTrait
     /**
      * Marshal host/port from misinterpreted IPv6 address
      *
-     * @param stdClass $accumulator
+     * @param Std $accumulator
      * @param array $server
      */
-    private static function marshalIpv6HostAndPort(stdClass $accumulator, array $server)
+    private static function marshalIpv6HostAndPort(Std $accumulator, array $server)
     {
         $accumulator->host = '[' . $server['SERVER_ADDR'] . ']';
         $accumulator->port = $accumulator->port ?: 80;
