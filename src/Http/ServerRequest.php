@@ -2,13 +2,15 @@
 
 namespace Runn\Http;
 
+use GuzzleHttp\Psr7\Stream;
+
 /**
- * Interface ServerRequestInterface
+ * Class Request
  * @package Runn\Http
  */
-interface ServerRequestInterface extends \Psr\Http\Message\ServerRequestInterface
+class ServerRequest extends \GuzzleHttp\Psr7\ServerRequest implements ServerRequestInterface
 {
-    const PHP_INPUT = 'php://input';
+    use MarshalParametersTrait;
 
     /**
      * Retrieve server parameters.
@@ -19,7 +21,10 @@ interface ServerRequestInterface extends \Psr\Http\Message\ServerRequestInterfac
      *
      * @return array
      */
-    public function getServerParams(): array;
+    public function getServerParams(): array
+    {
+        return parent::getServerParams();
+    }
 
     /**
      * Retrieve cookies.
@@ -31,7 +36,32 @@ interface ServerRequestInterface extends \Psr\Http\Message\ServerRequestInterfac
      *
      * @return array
      */
-    public function getCookieParams(): array;
+    public function getCookieParams(): array
+    {
+        return parent::getCookieParams();
+    }
+
+    /**
+     * Return an instance with the specified cookies.
+     *
+     * The data IS NOT REQUIRED to come from the $_COOKIE superglobal, but MUST
+     * be compatible with the structure of $_COOKIE. Typically, this data will
+     * be injected at instantiation.
+     *
+     * This method MUST NOT update the related Cookie header of the request
+     * instance, nor related values in the server params.
+     *
+     * This method MUST be implemented in such a way as to retain the
+     * immutability of the message, and MUST return an instance that has the
+     * updated cookie values.
+     *
+     * @param array $cookies Array of key/value pairs representing cookies.
+     * @return static
+     */
+    public function withCookieParams(array $cookies): ServerRequestInterface
+    {
+        return parent::withCookieParams($cookies);
+    }
 
     /**
      * Retrieve query string arguments.
@@ -45,7 +75,10 @@ interface ServerRequestInterface extends \Psr\Http\Message\ServerRequestInterfac
      *
      * @return array
      */
-    public function getQueryParams(): array;
+    public function getQueryParams(): array
+    {
+        return parent::getQueryParams();
+    }
 
     /**
      * Return an instance with the specified query string arguments.
@@ -69,7 +102,10 @@ interface ServerRequestInterface extends \Psr\Http\Message\ServerRequestInterfac
      *     $_GET.
      * @return static
      */
-    public function withQueryParams(array $query): self;
+    public function withQueryParams(array $query): ServerRequestInterface
+    {
+        return parent::withQueryParams($query);
+    }
 
     /**
      * Retrieve normalized file upload data.
@@ -83,7 +119,10 @@ interface ServerRequestInterface extends \Psr\Http\Message\ServerRequestInterfac
      * @return array An array tree of UploadedFileInterface instances; an empty
      *     array MUST be returned if no data is present.
      */
-    public function getUploadedFiles(): array;
+    public function getUploadedFiles(): array
+    {
+        return parent::getUploadedFiles();
+    }
 
     /**
      * Create a new instance with the specified uploaded files.
@@ -96,7 +135,10 @@ interface ServerRequestInterface extends \Psr\Http\Message\ServerRequestInterfac
      * @return static
      * @throws \InvalidArgumentException if an invalid structure is provided.
      */
-    public function withUploadedFiles(array $uploadedFiles): self;
+    public function withUploadedFiles(array $uploadedFiles): ServerRequestInterface
+    {
+        return parent::withUploadedFiles($uploadedFiles);
+    }
 
     /**
      * Retrieve any parameters provided in the request body.
@@ -115,7 +157,10 @@ interface ServerRequestInterface extends \Psr\Http\Message\ServerRequestInterfac
      *
      * @7.1
      */
-    public function getParsedBody()/*: ?array*/;
+    public function getParsedBody()/*: ?array*/
+    {
+        return parent::getParsedBody();
+    }
 
     /**
      * Return an instance with the specified body parameters.
@@ -145,7 +190,10 @@ interface ServerRequestInterface extends \Psr\Http\Message\ServerRequestInterfac
      * @throws \InvalidArgumentException if an unsupported argument type is
      *     provided.
      */
-    public function withParsedBody($data): self;
+    public function withParsedBody($data): ServerRequestInterface
+    {
+        return parent::withParsedBody($data);
+    }
 
     /**
      * Retrieve attributes derived from the request.
@@ -158,7 +206,10 @@ interface ServerRequestInterface extends \Psr\Http\Message\ServerRequestInterfac
      *
      * @return array Attributes derived from the request.
      */
-    public function getAttributes(): array;
+    public function getAttributes(): array
+    {
+        return parent::getAttributes();
+    }
 
     /**
      * Return an instance with the specified derived request attribute.
@@ -175,7 +226,10 @@ interface ServerRequestInterface extends \Psr\Http\Message\ServerRequestInterfac
      * @param mixed $value The value of the attribute.
      * @return static
      */
-    public function withAttribute($name, $value): self;
+    public function withAttribute($name, $value): ServerRequestInterface
+    {
+        return parent::withAttribute($name, $value);
+    }
 
     /**
      * Return an instance that removes the specified derived request attribute.
@@ -191,16 +245,43 @@ interface ServerRequestInterface extends \Psr\Http\Message\ServerRequestInterfac
      * @param string $name The attribute name.
      * @return static
      */
-    public function withoutAttribute($name): self;
+    public function withoutAttribute($name): ServerRequestInterface
+    {
+        return parent::withoutAttribute($name);
+    }
 
     /**
      * Creates object from $_SERVER and php://input
      * @param array|null $server
      * @param string $stream
-     * @return static
+     * @return ServerRequestInterface
+     * @throws Exceptions\InvalidUri
+     * @throws Exceptions\UnexpectedValueException
      */
     public static function constructFromGlobals(
         array $server = null,
         string $stream = self::PHP_INPUT
-    ): self;
+    ): ServerRequestInterface
+    {
+        $server = self::normalizeServer($server ?? $_SERVER);
+        $headers = self::marshalHeaders($server);
+
+        $method = $server['REQUEST_METHOD'] ?? 'GET';
+        $uri = static::marshalUriFromServer($server, $headers);
+        $body = new Stream(fopen($stream, 'rb'));
+        $version = self::marshalProtocolVersion($server);
+
+        return new static($method, $uri, $headers, $body, $version, $server);
+    }
+
+    public function __construct(
+        string $method,
+        $uri,
+        array $headers = [],
+        $body = null,
+        string $version = '1.1',
+        array $serverParams = []
+    ) {
+        parent::__construct($method, $uri, $headers, $body, $version, $serverParams);
+    }
 }
