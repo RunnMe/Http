@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 use Runn\Http\ServerRequest;
 use Runn\Http\Uri;
 
-class RequestTest extends TestCase
+class ServerRequestTest extends TestCase
 {
     use PHPMock;
 
