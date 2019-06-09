@@ -2,7 +2,7 @@
 
 namespace Runn\Http\Exceptions;
 
-use Runn\Core\Exception;
+use Runn\Http\Exception;
 
 /**
  * Class InvalidUri
