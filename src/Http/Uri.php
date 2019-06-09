@@ -120,9 +120,8 @@ class Uri implements UriInterface
      * Retrieve the port component of the URI.
      *
      * @return null|int The URI port.
-     * @7.1
      */
-    public function getPort()/*: ?int*/
+    public function getPort(): ?int
     {
         if (isset(static::PORTS[$this->getScheme()]) && $this->port === static::PORTS[$this->getScheme()]) {
             return null;
@@ -176,10 +175,9 @@ class Uri implements UriInterface
     /**
      * Retrieve the query params array (or iterable object) from the URI.
      *
-     * @7.1
      * @return iterable
      */
-    public function getQueryParams()/*: iterable*/
+    public function getQueryParams(): iterable
     {
         return new Std($this->params);
     }

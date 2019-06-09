@@ -12,8 +12,7 @@ namespace Runn\Http;
 interface UriInterface extends \Psr\Http\Message\UriInterface
 {
 
-    // @7.1
-    /*public */const PORTS = [
+    public const PORTS = [
         'ftp' => 21,
         'ssh' => 22,
         'http' => 80,
@@ -107,9 +106,8 @@ interface UriInterface extends \Psr\Http\Message\UriInterface
      * the standard port for that scheme, but SHOULD return null.
      *
      * @return null|int The URI port.
-     * @7.1
      */
-    public function getPort()/*: ?int*/;
+    public function getPort(): ?int;
 
     /**
      * Retrieve the authority component of the URI.
@@ -183,10 +181,9 @@ interface UriInterface extends \Psr\Http\Message\UriInterface
     /**
      * Retrieve the query params array (or iterable object) from the URI.
      *
-     * @7.1
      * @return iterable
      */
-    public function getQueryParams()/*: iterable*/;
+    public function getQueryParams(): iterable;
 
     /**
      * Retrieve the fragment component of the URI.
