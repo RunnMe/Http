@@ -17,18 +17,33 @@ class Request extends \Slim\Psr7\Request
      */
     public static function createFromGlobals(): self
     {
+        $method = $_SERVER['REQUEST_METHOD'];
+
+        $protocol = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
         /** @var string $actualLink string URI */
-        $actualLink = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        $actualLink = $protocol . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+        /** @var Uri $uri */
+
         $uri = new Uri($actualLink);
-        parse_str($uri->getQuery(), $query);
+
+        $headers = new  Headers(getallheaders());
+
+        $cookies = $_COOKIE;
+
+        $serverParams = $uri->getQueryParams()->toArray();
+
         $stream = (new StreamFactory())->createStream(file_get_contents('php://input'));
+
+        $uploadedFiles = $_FILES;
+
         return new Request(
-            $_SERVER['REQUEST_METHOD'],
+            $method,
             $uri,
-            new Headers(getallheaders()),
-            $_COOKIE,
-            $query,
-            $stream
+            $headers,
+            $cookies,
+            $serverParams,
+            $stream,
+            $uploadedFiles
         );
     }
 }
