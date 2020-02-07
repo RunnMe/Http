@@ -17,11 +17,11 @@ class Request extends \Slim\Psr7\Request
      */
     public static function createFromGlobals(): self
     {
-        $actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-        $uri = new Uri($actual_link);
+        /** @var string $actualLink string URI */
+        $actualLink = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        $uri = new Uri($actualLink);
         parse_str($uri->getQuery(), $query);
-        $streamFactory = new StreamFactory();
-        $stream = $streamFactory->createStream();
+        $stream = (new StreamFactory())->createStream(file_get_contents('php://input'));
         return new Request(
             $_SERVER['REQUEST_METHOD'],
             $uri,
