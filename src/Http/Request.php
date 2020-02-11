@@ -11,6 +11,43 @@ use Slim\Psr7\Headers;
  */
 class Request extends \Slim\Psr7\Request
 {
+    /** @var array $routeParams Uri params */
+    protected array $routeParams;
+
+    /**
+     * Add route param
+     *
+     * @param string $key
+     * @param mixed $value
+     * @return $this
+     */
+    public function addRouteParam(string $key, $value)
+    {
+        $this->routeParams[$key] = $value;
+        return $this;
+    }
+
+    /**
+     * Get all route params
+     *
+     * @return array
+     */
+    public function getRouteParams()
+    {
+        return $this->routeParams;
+    }
+
+    /**
+     * Get param by key
+     *
+     * @param string $key
+     * @return mixed|null
+     */
+    public function getRouteParam(string $key)
+    {
+        return $this->routeParams[$key] ?? null;
+    }
+
     /**
      * @return static
      * @throws Exceptions\InvalidUri
