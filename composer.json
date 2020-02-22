@@ -16,7 +16,7 @@
   "prefer-stable": true,
   "require": {
     "php": ">=7.2",
-    "runn/core": "dev-master",
+    "runn/core": "*",
     "psr/http-message": "*",
     "slim/psr7": "^1.0"
   },
