@@ -11,11 +11,13 @@ use Throwable;
  */
 class InvalidUri extends Exception
 {
+
     /** @var string */
-    protected $uri;
+    protected /* @7.4 string*/$uri;
 
     /**
      * InvalidUri constructor.
+     *
      * @param string $uri
      * @param string $message
      * @param int|string $code

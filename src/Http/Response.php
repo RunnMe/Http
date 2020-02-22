@@ -2,8 +2,6 @@
 
 namespace Runn\Http;
 
-use Psr\Http\Message\ResponseInterface;
-
 /**
  * Base HTTP response class
  *
