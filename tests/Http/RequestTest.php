@@ -35,6 +35,7 @@ class RequestTest extends TestCase
         $this->assertSame(['baz' => '42'], $request->getServerParams());
         $this->assertSame(['foo' => 'bar'], $request->getCookieParams());
         $this->assertEquals(new Uri('https://test.ltd/foo/bar?baz=42'), $request->getUri());
+        $this->assertSame(['PHP'], $request->getHeader('User-Agent'));
     }
 
 }
