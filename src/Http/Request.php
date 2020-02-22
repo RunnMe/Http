@@ -15,7 +15,7 @@ class Request extends \Slim\Psr7\Request implements RequestInterface
 {
 
     /** @var array $routeParams URI params */
-    protected /* @7.4 array*/$routeParams = [];
+    protected array $routeParams = [];
 
     /**
      * Add route param
