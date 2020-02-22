@@ -8,7 +8,7 @@ namespace Runn\Http;
  * Class Response
  * @package Runn\Http
  */
-class Response extends \Slim\Psr7\Response
+class Response extends \Slim\Psr7\Response implements ResponseInterface
 {
 
     public const CHUNK_SIZE = 1024 * 4;
