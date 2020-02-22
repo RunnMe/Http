@@ -13,7 +13,7 @@ class InvalidUri extends Exception
 {
 
     /** @var string */
-    protected /* @7.4 string*/$uri;
+    protected string $uri;
 
     /**
      * InvalidUri constructor.
