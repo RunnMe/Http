@@ -2,8 +2,12 @@
 
 namespace Runn\Http;
 
+use Psr\Http\Message\StreamInterface;
+use Psr\Http\Message\UriInterface;
 use Slim\Psr7\Factory\StreamFactory;
 use Slim\Psr7\Headers;
+use Slim\Psr7\Interfaces\HeadersInterface;
+use Slim\Psr7\Stream;
 
 /**
  * Base HTTP request class
@@ -17,8 +21,33 @@ class Request extends \Slim\Psr7\Request implements RequestInterface
     /** @var array $routeParams URI params */
     protected array $routeParams = [];
 
+    public function __construct(
+        $method = 'GET',
+        UriInterface $uri = null,
+        HeadersInterface $headers = null,
+        array $cookies = [],
+        array $serverParams = [],
+        StreamInterface $body = null,
+        array $uploadedFiles = []
+    )
+    {
+        if (null === $uri) {
+            $uri = new Uri('');
+        }
+
+        if (null === $headers) {
+            $headers = new Headers();
+        }
+
+        if (null === $body) {
+            $body = new Stream(fopen('php://input', 'r'));
+        }
+
+        parent::__construct($method, $uri, $headers, $cookies, $serverParams, $body, $uploadedFiles);
+    }
+
     /**
-     * Add route param
+     * Adds one route param
      *
      * @param string $key
      * @param mixed $value
@@ -31,17 +60,17 @@ class Request extends \Slim\Psr7\Request implements RequestInterface
     }
 
     /**
-     * Get all route params
+     * Returns all route params
      *
      * @return array
      */
-    public function getRouteParams()
+    public function getRouteParams(): array
     {
         return $this->routeParams;
     }
 
     /**
-     * Get param by key
+     * Returns route parameter by key
      *
      * @param string $key
      * @return mixed|null
@@ -61,7 +90,7 @@ class Request extends \Slim\Psr7\Request implements RequestInterface
     {
         $method = $_SERVER['REQUEST_METHOD'];
 
-        $protocol = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
+        $protocol = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' ? 'https' : 'http';
 
         /** @var string $actualLink string URI */
         $actualLink = $protocol . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
@@ -79,7 +108,7 @@ class Request extends \Slim\Psr7\Request implements RequestInterface
 
         $uploadedFiles = $_FILES;
 
-        return new Request(
+        return new static(
             $method,
             $uri,
             $headers,
