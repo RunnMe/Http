@@ -12,8 +12,14 @@ class UriTest extends TestCase
 
     public function testMalformed()
     {
-        $this->expectException(InvalidUri::class);
-        $uri = new Uri('///');
+        try {
+            $uri = new Uri('///');
+            $this->fail();
+        } catch (\Throwable $e) {
+            $this->assertSame(InvalidUri::class, get_class($e));
+            $this->assertSame('///', $e->getUri());
+            $this->assertSame('Invalid URI', $e->getMessage());
+        }
     }
 
     public function testScheme()

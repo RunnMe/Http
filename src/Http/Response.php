@@ -5,11 +5,14 @@ namespace Runn\Http;
 use Psr\Http\Message\ResponseInterface;
 
 /**
+ * Base HTTP response class
+ *
  * Class Response
  * @package Runn\Http
  */
 class Response extends \Slim\Psr7\Response
 {
+
     public const CHUNK_SIZE = 1024 * 4;
 
     /**
@@ -45,7 +48,6 @@ class Response extends \Slim\Psr7\Response
             if (!$contentLength) {
                 $contentLength = $body->getSize();
             }
-
 
             if (isset($contentLength)) {
                 $amountToRead = $contentLength;
@@ -87,4 +89,5 @@ class Response extends \Slim\Psr7\Response
 
         return in_array($response->getStatusCode(), [204, 205, 304]);
     }
+
 }

@@ -6,13 +6,16 @@ use Slim\Psr7\Factory\StreamFactory;
 use Slim\Psr7\Headers;
 
 /**
+ * Base HTTP request class
+ *
  * Class Request
  * @package Runn\Http
  */
-class Request extends \Slim\Psr7\Request
+class Request extends \Slim\Psr7\Request implements RequestInterface
 {
-    /** @var array $routeParams Uri params */
-    protected array $routeParams;
+
+    /** @var array $routeParams URI params */
+    protected /* @7.4 array*/$routeParams = [];
 
     /**
      * Add route param
@@ -49,21 +52,24 @@ class Request extends \Slim\Psr7\Request
     }
 
     /**
-     * @return static
+     * Creates request object from $_SERVER, $_REQUEST, $_COOKIE, $_FILES
+     *
+     * @return RequestInterface
      * @throws Exceptions\InvalidUri
      */
-    public static function createFromGlobals(): self
+    public static function constructFromGlobals(): RequestInterface
     {
         $method = $_SERVER['REQUEST_METHOD'];
 
         $protocol = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
+
         /** @var string $actualLink string URI */
         $actualLink = $protocol . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-        /** @var Uri $uri */
 
+        /** @var Uri $uri */
         $uri = new Uri($actualLink);
 
-        $headers = new  Headers(getallheaders());
+        $headers = new Headers(getallheaders());
 
         $cookies = $_COOKIE;
 
@@ -83,4 +89,5 @@ class Request extends \Slim\Psr7\Request
             $uploadedFiles
         );
     }
+
 }

@@ -32,7 +32,7 @@ class Uri implements UriInterface
     {
         $parts = parse_url($uri);
         if (false === $parts) {
-            throw new InvalidUri('Invalid URI');
+            throw new InvalidUri($uri);
         }
         $this->scheme = strtolower($parts['scheme'] ?? '');
         $this->username = $parts['user'] ?? '';
@@ -176,6 +176,7 @@ class Uri implements UriInterface
      * Retrieve the query params array (or iterable object) from the URI.
      *
      * @return iterable
+     * @throws \Runn\Core\Exceptions
      */
     public function getQueryParams(): iterable
     {
