@@ -20,6 +20,26 @@ class RequestTest extends TestCase
         $this->assertSame('bar', $request->getRouteParam('foo'));
     }
 
+    public function testGetParam()
+    {
+        $request = new Request();
+        $this->assertNull($request->getParam('foo'));
+
+        $request->addRouteParam('foo', 'bar');
+        $this->assertSame('bar', $request->getParam('foo'));
+
+        $_GET['foo'] = 'get';
+        $_POST['foo'] = 'post';
+
+        $this->assertSame('bar', $request->getParam('foo'));
+
+        $request->addRouteParam('foo', null);
+        $this->assertSame('get', $request->getParam('foo'));
+
+        $_GET['foo'] = null;
+        $this->assertSame('post', $request->getParam('foo'));
+    }
+
     public function testConstructFromGlobals()
     {
         $_SERVER['REQUEST_METHOD'] = 'GET';
