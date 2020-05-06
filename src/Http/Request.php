@@ -81,6 +81,40 @@ class Request extends \Slim\Psr7\Request implements RequestInterface
     }
 
     /**
+     * Returns parameter by key
+     * It must found parameter at route params or at $_GET, $_POST by php.ini variables_order setting
+     *
+     * @param string $key
+     * @return mixed|null
+     */
+    public function getParam(string $key)
+    {
+        $value = $this->getRouteParam($key);
+        if (null !== $value) {
+            return $value;
+        }
+        $order = ini_get('request_order') ?: ini_get('variables_order') ?: 'EGPCS';
+        foreach (str_split($order) as $source) {
+            switch (strtoupper($source)) {
+                case 'G':
+                    $value = $_GET[$key] ?? null;
+                    if (null !== $value) {
+                        return $value;
+                    }
+                    break;
+                case 'P':
+                    $value = $_POST[$key] ?? null;
+                    if (null !== $value) {
+                        return $value;
+                    }
+                    break;
+            }
+        }
+        return null;
+    }
+
+
+    /**
      * Creates request object from $_SERVER, $_REQUEST, $_COOKIE, $_FILES
      *
      * @return RequestInterface
