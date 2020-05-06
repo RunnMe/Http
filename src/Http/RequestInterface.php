@@ -35,6 +35,15 @@ interface RequestInterface extends PsrServerRequestInterface
     public function getRouteParam(string $key);
 
     /**
+     * Returns parameter by key
+     * It must found parameter at route params or at $_GET, $_POST by php.ini variables_order setting
+     *
+     * @param string $key
+     * @return mixed|null
+     */
+    public function getParam(string $key);
+
+    /**
      * Creates object from $_SERVER, $_REQUEST, $_COOKIE, $_FILES
      * @return RequestInterface
      */
