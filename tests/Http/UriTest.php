@@ -75,6 +75,14 @@ class UriTest extends TestCase
 
     public function testHost()
     {
+        $uri = new Uri('localhost');
+        $this->assertSame('localhost', $uri->getHost());
+        $this->assertSame('', $uri->getPath());
+
+        $uri = new Uri('test.foo.bar');
+        $this->assertSame('test.foo.bar', $uri->getHost());
+        $this->assertSame('', $uri->getPath());
+
         $uri = new Uri('/foo/bar');
         $this->assertSame('', $uri->getHost());
 

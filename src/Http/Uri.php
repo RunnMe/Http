@@ -34,6 +34,12 @@ class Uri implements UriInterface
         if (false === $parts) {
             throw new InvalidUri($uri);
         }
+
+        if (!isset($parts['host']) && ($parts['path'] === 'localhost' || false !== strpos($parts['path'], '.'))) {
+            $parts['host'] = $parts['path'];
+            $parts['path'] = '';
+        }
+
         $this->scheme = strtolower($parts['scheme'] ?? '');
         $this->username = $parts['user'] ?? '';
         $this->password = $parts['pass'] ?? '';
